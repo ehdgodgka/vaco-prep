@@ -1,0 +1,259 @@
+html,
+body,
+#wrapper {
+    font-family: Arial, sans-serif;
+    font-size: 1;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+@media only screen and (max-width: 600px) {
+    header {
+     visibility: hidden;
+    }
+  }
+header {
+    position: relative;
+    width: 100%;
+    min-width: 1000px;
+}
+.nav_manu{
+    top:16px;
+    height: 30px;
+    position: absolute;
+    right:25px;
+
+}
+.nav_manu a{
+    float:left;
+    margin-right:15px;
+    line-height: 30px;
+    text-decoration: none;
+    font-size:13px;
+    margin-bottom:0;
+}
+.nav_manu a:hover{
+   color:gray;
+   text-decoration: underline;
+   text-decoration-color: black;
+}
+.nav_manu #apps{
+    display: inline-block;
+    width:30px;
+    height:30px;
+    margin-right:10px;
+    background-image: url(//ssl.gstatic.com/gb/images/i1_1967ca6a.png);
+    background-position: -132px -38px;
+    background-size: 528px 68px;
+    opacity:0.5;
+    
+   
+}
+.nav_manu #apps:hover{
+    opacity:1;
+
+
+}
+.nav_manu .myphoto_frame{
+    cursor: pointer;
+    display: inline-block;
+    margin-top:-5px;
+    background-image: url(https://lh3.googleusercontent.com/-RGAEeXpJeOk/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rfHNw9CYM-uKbjdPolN5SNNXyY_hw.CMID/s32-c/photo.jpg);
+    background-size: 100% 100% ;
+    border-radius: 100px;
+    box-shadow:inset 0px 0px 0px 4px #fff ;
+    
+
+}
+
+
+.center {
+    margin: 0 auto;
+
+}
+
+main {
+    padding-top: 198px;
+    width: 100%;
+    min-width: 1000px;
+
+}
+
+main img {
+    display: block;
+    widows: 271px;
+}
+
+.main_search-bar:hover {
+    box-shadow: 0px 1px 5px 2px rgba(0, 0, 0, 0.10);
+}
+
+.main_search-bar {
+    margin-top: 27px;
+    width: 554px;
+    height: 39px;
+    border: #dfe1e5 solid 1px;
+    border-radius: 24px;
+    padding: 5px 8px 0 20px;
+}
+
+main input {
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    border: none;
+    background: transparent;
+    width: 514px;
+    height: 34px;
+}
+
+input[type="text"]:focus {
+    outline-style: none;
+
+}
+
+main .icon-mic {
+    display: inline-block;
+    background: url(//www.gstatic.com/images/branding/googlemic/1x/googlemic_color_24dp.png) 0 0 no-repeat;
+    background-size: 24px;
+    margin-bottom: -7px;
+
+    height: 24px;
+    width: 24px;
+}
+
+.tooltip {
+    position: relative;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    position: absolute;
+    background-color: rgb(29, 29, 29);
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    width: 100px;
+    height: 23px;
+    top: 150%;
+    left: 50%;
+    margin-left: -50px;
+    text-align: center;
+    box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    border: white 1px solid;
+    line-height: 23px;
+}
+
+.tooltip .tooltip-text::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -3px;
+    border-width: 20px;
+    border: solid;
+    border-color: transparent transparent black transparent;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 18px;
+}
+
+.button-group input {
+    display: inline-block;
+    margin: 11px 6px;
+    padding: 0px 16px;
+    height: 36px;
+    width: fit-content;
+    background: #f2f2f2;
+    border: solid #f2f2f2 1px;
+    border-radius: 4px;
+    color: #5F6368;
+    font-size: 14px;
+}
+
+.button-group input:hover {
+    border: solid rgb(187, 186, 186) 0.5px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(to bottom, #f2f2f2b2, #f2f2f2);
+    color: rgb(24, 24, 24);
+    cursor: pointer;
+}
+
+main .lang {
+    margin-top: 16px;
+    text-align: center;
+    font-size: small;
+    color: #222;
+}
+
+main .lang a {
+    margin: 7px;
+    color: #1a0dab;
+}
+
+main .lang a:not(:hover) {
+    text-decoration: none;
+
+}
+
+footer {
+    background: #f2f2f2;
+    border-top: solid 1px #e4e4e4;
+
+    height: 82px;
+    width: 100%;
+    min-width: 1000px;
+
+    position: absolute;
+    bottom: 0px;
+
+}
+
+.footer_country {
+    font-size: 15px;
+    line-height: 40px;
+    color: rgba(0, 0, 0, .54);
+    margin-left: 30px;
+
+}
+
+.footer_nav {
+    height: 40px;
+    border-top: solid 1px #e4e4e4;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer_nav ul {
+    list-style: none;
+    display: flex;
+    padding-left: 3px;
+    font-size: 13px;
+}
+
+.footer_nav li {
+    padding-left: 27px;
+}
+
+.footer_nav li:nth-last-child(1) {
+    padding-right: 30px;
+}
+
+.footer_nav a {
+    color: #5f6368;
+}
+
+.footer_nav a:not(:hover) {
+    text-decoration: none;
+    color: #5f6368;
+
+}
