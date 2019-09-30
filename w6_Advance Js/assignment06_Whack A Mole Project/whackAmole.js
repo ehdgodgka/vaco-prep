@@ -1,5 +1,5 @@
 var moleNum = 0;
-var moleCatch=Array(9).fill(false);
+var moleCatch;
 var hole = document.querySelectorAll('.hole');
 var moleIndex =0;
 
@@ -19,6 +19,7 @@ main.addEventListener('click',event=>{
 const startButton = document.querySelector('.bt_start');
 startButton.addEventListener('click', (event) => {
   overLap.style.visibility = 'hidden';
+  moleCatch=Array(9).fill(false);
   moleClick();
   setTimeout(moleOut, 1000);
 });
@@ -58,7 +59,7 @@ function moleOut() {
     console.log('moleIndex:' + moleIndex);
     moleNum++; // 나온 두더지 수
 
-    // console.log(moleNum+"번쨰 두더지 ")
+    console.log(moleNum+"번쨰 두더지 ")
 
     // //  3초 뒤에 체크하기
     setTimeout(moleHide, 3000, moleNum,moleIndex);
