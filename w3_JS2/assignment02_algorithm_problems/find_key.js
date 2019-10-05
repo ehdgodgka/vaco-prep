@@ -2,16 +2,13 @@ function findKey(start, swaps) {
   var position = start;
 
   for (var i = 0; i < swaps.length; i++) {
-    var result = swaps[i].indexOf(position);
-    if (result === -1) {
-      //  없음 ... 아무것도 않는다
-    } else if (result === 0) {
+    const result = swaps[i].indexOf(position);
+    if (result === 0) {
       position = swaps[i][1];
     } else if (result === 1) {
       position = swaps[i][0];
     }
   }
-
   return position;
 }
 

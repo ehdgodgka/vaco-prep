@@ -1,7 +1,7 @@
 function findOddInt(n) {
   var count = 1;
-  var numNow = n[0]; // 세고있는 수 초기화
-  // 현재 세고있는수
+  var numNow = n[0];
+
   for (var i = 1; i < n.length; i++) {
     if (numNow === n[i]) {
       count++;
@@ -13,7 +13,5 @@ function findOddInt(n) {
       count = 1;
     }
   }
-  // 현재 센 갯수
-
   return numNow;
 }
