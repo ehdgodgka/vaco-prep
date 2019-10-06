@@ -2,27 +2,36 @@ html,body{
     height:100%;
     margin:0 10px;
 }
-.calender{
+.calendar{
     border:solid black 1px;
     box-sizing: border-box;
     display:flex;
     height:250px;
     width:fit-content;
 }
-.calender .date-selected{
+.calendar .date_chosen{
     text-align: center;
     width:200px;
     background-color:rgba(0, 128, 0, 0.253);
 }
-.date-selected .day{
-
+.monthly-head{
+text-align: center;
 }
-.date-selected .date{
+.bt-last-month{
+    float:left;
+    margin-left:50px;
+}
+.bt-next-month{
+    float:right;
+    margin-right:50px;
+}
+
+.date_chosen-date{
     font-size: 5em;
     font-weight: 900;
 }
 
-.calender .month{
+.calendar .monthly{
     height: 100%;
     background-color:rgba(46, 139, 86, 0.438);
 }

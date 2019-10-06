@@ -5,24 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>calender</title>
+    <title>calendar</title>
     <link rel='stylesheet' href='style.css'>
 </head>
 
 <body>
-    <div class='calender'>
-        <div class='date-selected'>
-            <div class='day'>Monday</div>
-            <div class='date'>1</div>
+    <div class='calendar'>
+        <div class='date_chosen'>
+            <div class='date_chosen-day'>Monday</div>
+            <div class='date_chosen-date'>1</div>
         </div>
-        <div class='calender-body'>
-                <div>
+        <div class='monthly'>
+                <div class='monthly-head'>
                         <button class='bt-last-month'><</button>
-                        <span class='year-selected'>2019 </span> <span class='month-selected'> January </span>
+                        <span class='year'>2019</span><span class='month'>January</span>
                         <button class='bt-next-month'>></button>
                 </div>
-                <table class='calender-table'>
-                    <thead>
+                <table class='monthly-table'>
+                    <thead class='days'>
                         <tr>
                             <th>S</th>
                             <th>M</th>
@@ -90,7 +90,6 @@
                         </tr>
                     </tbody>
                 </table>
-        
             </div>
         </div>
 <script src='calendar.js'></script>
