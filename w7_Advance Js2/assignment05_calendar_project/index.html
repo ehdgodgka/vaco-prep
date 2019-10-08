@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div class='calendar'>
+    <div class='calendar border-style'>
         <div class='date_chosen'>
             <div class='date_chosen-day'>Monday</div>
             <div class='date_chosen-date'>1</div>
@@ -18,7 +18,7 @@
         <div class='monthly'>
                 <div class='monthly-head'>
                         <button class='bt-last-month'><</button>
-                        <span class='year'>2019</span><span class='month'>January</span>
+                        <div class='inline year'>2019</div><div class=' inline month'>January</div>
                         <button class='bt-next-month'>></button>
                 </div>
                 <table class='monthly-table'>
@@ -91,6 +91,16 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class='todolist border-style'>
+        
+        <div class='todolist-title'><div class='todolist-date'>2019.10.07.TUE</div> TODOs</div> 
+        <div class= 'todolist-add'>
+                <input class='todolist-add-text' type='text'>
+                <input class='todolist-add-submit' type='button' value="ADD">
+        </div>
+               
+        <div class='todolist-list'></div>
         </div>
 <script src='calendar.js'></script>
 </body>

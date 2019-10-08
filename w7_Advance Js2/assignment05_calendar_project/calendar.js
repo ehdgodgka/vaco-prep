@@ -30,7 +30,7 @@ chooseDate();
 function setMonthlyHead(){
 var year = document.querySelector('.year');
 var month = document.querySelector('.month');
-year.textContent=dateChosen.year;
+year.textContent=dateChosen.year+"  ";
 month.textContent=monthToString(dateChosen.month);
 }
 
@@ -107,23 +107,18 @@ function chooseDate(){
             //highlight delete
             cancelDateHighlight();
 
-             //get all table cell
-            // var tableCell=document.querySelectorAll('td');
-            // tableCell.forEach(item=>{
-            //     if(item.style.background){
-            //         item.style.background='';
-            //     }
-            // })
             console.log(event.target);
             highlighted =event.target;
-            event.target.style.background='yellow';
+            event.target.style.background='yellowgreen';
             //mark date
 
             dateChosen.date=event.target.textContent;
             dateShow.textContent=dateChosen.date;
             dayShow.textContent=dayToString(dateChosen.day());
+            //TODO 0: 날짜가 바뀌면 ! todo list 가 바껴야한다 
+            todolistInit();
         }
-    })
+    });
 }
 
 function cancelDateHighlight(){
@@ -162,4 +157,56 @@ function monthToString(month){
     return months[month];
 }
 
+function todolistInit(){
+    // TODO 1:현재 날짜에 TODO 리스트가 있으면 보여줍니다
+    showTodolistThisDate();
+    // TODO 2:todo 체크기능 추가 
+    checkTodo();
+     // TODO 3:todo기능 추가 수정 삭제 기능을 등록합니다.
+     setTodoFunction();
+    // TODO 4:완료 미완료에 따라 필터링을 해서 보여줘야합니다 
+    filterTodolist();
+    // TODO 5:clear 기능 :날짜별 Todo 를 Clear 할수있는 기능이 필요하다
+   
+    
+}
+function showThisdateTodolist(){ 
+    // 원하는 날짜의 todo list와 남은 todo list 개수를 보여줘야합니다 
+    // todolist-date에 현재 날짜를 박습니다 
+    // Todolist 객체에 현재 날짜가 있냐 ?
+        // 있다:
+            //json을 object로 변경한다.
+            //배열의 길이를 체크한다: 체크리스트의 수
+            //각 배열의 값에 따라 todo element를 만들어서 dom에 추가 해서 보이게 한다 .
+        // 없다
+            // 할일이 없습니다를 출력한다.
+}
+function checkTodo(){
+
+}
+function setAddTodo(){
+    // 할일을 추가할수있게 합니다 
+    //add 버튼 이벤트 리스너 -> 
+
+    // 할일을 더블 클릭으로 수정할수있게 합니다 
+
+    // 할일을 올리면 생성되는 x 버튼으로 삭제할수있게 합니다. 
+
+// 변경사항을 다시저장해야합니다 
+// 날짜- json 객체에다가 저장 저장 ... 
+// json <- Array[{todo:blabla,check:true or false },{todo:blabla, check:true or false},{ },{ },{ }]
+}
+
+function filterTodolist(){
+
+}
+function setTodoFunction(){
+// TodoCheck
+}
+
+
+
+
+
 calendarInit();
+todolistInit();

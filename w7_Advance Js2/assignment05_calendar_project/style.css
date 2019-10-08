@@ -1,21 +1,51 @@
-html,body{
-    height:100%;
-    margin:0 10px;
+html{
+ margin: 0;
+ height:100%;
+ display:flex;
+}
+body{
+    margin:10px;
+    display:flex;
+    flex-direction: column;
 }
 .calendar{
-    border:solid black 1px;
+    flex:1;
     box-sizing: border-box;
     display:flex;
-    height:250px;
+    height:230px;
     width:fit-content;
+    
 }
 .calendar .date_chosen{
+    padding-top:30px;
     text-align: center;
     width:200px;
-    background-color:rgba(0, 128, 0, 0.253);
+    color:white;
+    background-color:rgb(77, 63, 59);
 }
+.calendar .date_chosen-day{
+    font-size: 1.5em;
+    font-weight:600;
+}
+.calendar .date_chosen-date{
+    font-size: 4em;
+    font-weight: 800;
+}
+.calendar .monthly{
+    height: 100%;
+}
+
 .monthly-head{
+    padding:10px;
 text-align: center;
+}
+.monthly-table{
+    font-size:12px;
+}
+td{
+    text-align:center;
+    width:60px;
+    padding:5px 0;
 }
 .bt-last-month{
     float:left;
@@ -26,18 +56,62 @@ text-align: center;
     margin-right:50px;
 }
 
-.date_chosen-date{
-    font-size: 5em;
-    font-weight: 900;
+
+
+
+
+.inline{
+    display:inline-block;
+    width:100px;
 }
 
-.calendar .monthly{
-    height: 100%;
-    background-color:rgba(46, 139, 86, 0.438);
+.border-style{
+    border:rgb(77, 63, 59) 1px solid;
+    border-radius: 5px;
 }
 
-td{
 
-    text-align:center;
-    width:60px;
+.todolist{
+    flex:3;
+    width:655px;
+    margin:10px 0;
+    display:flex;
+    flex-direction: column;
+}
+.todolist-title{
+    position: relative;
+    text-align: center;
+    font-size:30px;
+    font-weight:900;
+    color:rgb(77, 63, 59);
+}
+.todolist-date{
+    position: absolute;
+    top:20px;
+    right:30px;
+    font-size:10px;
+}
+.todolist-add{
+    margin:20px;
+    display: flex;
+    height:30px;
+}
+.todolist-add-text{
+padding-left:10px;
+flex:8;
+font-size:15px;
+border:1px rgb(43, 90, 43) solid ;
+border-top-left-radius:10px;
+outline:none;
+}
+.todolist-add-submit{
+flex:2;
+background: rgb(43, 90, 43);
+color:white;
+border:1px;
+border-top-right-radius: 10px;
+outline:none;
+}
+.todolist-add-submit:active{
+    background: rgb(34, 70, 34);   
 }
