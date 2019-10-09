@@ -135,10 +135,17 @@ outline:none;
     border: lightgray solid 0.5px;
     border-top:none;
     box-sizing: border-box;
-    background:white
+    background:white;
+    position: relative;
 }
 .done{
     text-decoration-line: line-through;
+}
+.button-delete{
+    position: absolute;
+    right:10px;
+    bottom:0;
+    cursor: pointer;
 }
 .todolist-footer{
     padding:15px 20px;
