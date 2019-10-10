@@ -89,7 +89,7 @@ td {
     max-height: 600px;
     width: 655px;
     margin: 10px 0;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
     display: flex;
     flex-direction: column;
 
@@ -182,11 +182,49 @@ input.edit {
 }
 
 .todolist-footer {
-    padding: 15px 20px;
+    margin-top:10px;
+    padding: 10px 20px;
     color: gray;
     font-size: 10px;
+    background:rgb(230, 230, 228);
+    border-top:1px solid lightgray;
+    box-sizing:border-box;
+    font-size:15px;
+    display:flex;
+    justify-content: space-between;
 }
 
+
+.footer-todo-clear{
+float:right;
+color:orangered;
+padding:0 5px;
+background: lightgray;
+border:1px orange solid;
+border-radius:5px;
+cursor: pointer;
+}
+.footer-filter{
+    background:lightgray;
+    width:fit-content;
+    display:flex;
+    border-radius: 2px;
+}
+.button-filter{
+    margin:0 5px;
+    width:70px;
+    cursor: pointer;
+    text-align: center;
+}
+.filter-on{
+box-shadow:0px 3px 0px  rgba(77, 63, 59);
+margin-bottom: 2px;
+background: rgba(77, 63, 59, 0.9);
+color:white;
+text-align: center;
+border-radius: 5px;
+box-shadow: 30%;
+}
 input[type='checkbox'] {
     -webkit-transform: scale(2);
     margin: 0 30px;
