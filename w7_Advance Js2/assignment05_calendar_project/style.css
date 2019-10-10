@@ -141,6 +141,15 @@ outline:none;
 .done{
     text-decoration-line: line-through;
 }
+.todo.edit{
+    background:yellowgreen;
+    display:flex;
+}
+input.edit{
+    font-size:18px;
+    margin:5px 0;
+    flex:1;
+}
 .button-delete{
     position: absolute;
     right:10px;
