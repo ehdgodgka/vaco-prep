@@ -380,7 +380,7 @@ function deleteNmodifyTodo() {
     if (thisTodo.classList.contains('todo')) {
         // 수정할 todo 가 몇번째인지 기록 
         var index = Array.from(todos.children).indexOf(
-            event.target.parentElement
+            thisTodo
           );
       // 원래 태그를 빼와서 저장해두기
         var backup=[] ;
@@ -422,8 +422,11 @@ function deleteNmodifyTodo() {
           }  );
         thisTodo.classList.remove('edit');
         //  현재 투두리스트를 수정 
+        console.log(index);
+        thisTodolist[index].todo=text;
         //전체 투두 리스트를 수정 
-       })
+        saveThisList();
+       });
     }
   });
 }

@@ -1,186 +1,214 @@
-html{
- margin: 0;
- height:100%;
- display:flex;
+html {
+    margin: 0;
+    height: 100%;
+    display: flex;
 }
-body{
-    margin:10px;
-    display:flex;
+
+body {
+    margin: 10px;
+    display: flex;
     flex-direction: column;
 }
-.calendar{
+
+.calendar {
     box-sizing: border-box;
-    display:flex;
-    width:fit-content;
+    display: flex;
+    width: fit-content;
     height: fit-content;
 }
-.calendar .date_chosen{
-    padding-top:30px;
+
+.calendar .date_chosen {
+    padding-top: 30px;
     text-align: center;
-    width:200px;
-    color:white;
-    background-color:rgb(77, 63, 59);
+    width: 200px;
+    color: white;
+    background-color: rgb(77, 63, 59);
 }
-.calendar .date_chosen-day{
+
+.calendar .date_chosen-day {
     font-size: 1.5em;
-    font-weight:600;
+    font-weight: 600;
 }
-.calendar .date_chosen-date{
+
+.calendar .date_chosen-date {
     font-size: 4em;
     font-weight: 800;
 }
-.calendar .monthly{
+
+.calendar .monthly {
     height: 100%;
-    
+
 }
 
-.monthly-head{
-    padding:10px;
-text-align: center;
-color:rgb(77, 63, 59);
-font-size:15px;
-font-weight:900;
+.monthly-head {
+    padding: 10px;
+    text-align: center;
+    color: rgb(77, 63, 59);
+    font-size: 15px;
+    font-weight: 900;
 }
-.monthly-table{
-    font-size:12px;
-   
+
+.monthly-table {
+    font-size: 12px;
+
 }
-td{
-    text-align:center;
-    width:60px;
-    padding:5px 0;
-    color:gray
+
+td {
+    text-align: center;
+    width: 60px;
+    padding: 5px 0;
+    color: gray
 }
-.bt-last-month{
-    float:left;
-    margin-left:50px;
+
+.bt-last-month {
+    float: left;
+    margin-left: 50px;
 }
-.bt-next-month{
-    float:right;
-    margin-right:50px;
+
+.bt-next-month {
+    float: right;
+    margin-right: 50px;
 }
+
 
 
 
 
-
-.inline{
-    display:inline-block;
-    width:100px;
+.inline {
+    display: inline-block;
+    width: 100px;
 }
 
-.border-style{
-    border:lightgray 1px solid;
+.border-style {
+    border: lightgray 1px solid;
     border-radius: 5px;
 }
 
 
-.todolist{
-    max-height:600px;
-    width:655px;
-    margin:10px 0;
-    box-sizing: border-box;
-    display:flex;
-    flex-direction: column;
-    
-}
-.todolist-title{
-    position: relative;
-    margin:10px 10px 0 10px;
-    text-align: center;
-    font-size:30px;
-    font-weight:900;
-  color:rgb(77, 63, 59);
-}
-.todolist-date{
-    position: absolute;
-    top:20px;
-    right:30px;
-    font-size:10px;
-    font-weight:500;
-    color:gray;
-}
-.todolist-add{
-    margin:10px 10px 0 10px;
-    display: flex;
-    height:30px;
-}
-.todolist-add-text{
-padding-left:10px;
-flex:8;
-font-size:15px;
-border:1px solid lightgray;
-border-top-left-radius:10px;
-outline:none;
-}
-.todolist-add-submit{
-flex:2;
-background:rgb(77, 63, 59);
-color:white;
-border:1px;
-border-top-right-radius: 10px;
-outline:none;
-}
-.todolist-add-submit:active{
-    background: rgb(34, 70, 34);   
-}
-.todolist-list{
+.todolist {
     max-height: 600px;
-    overflow-y:scroll;
+    width: 655px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
 }
-.todo{
-    height:50px;
-    margin-left:10px;
+
+.todolist-title {
+    position: relative;
+    margin: 10px 10px 0 10px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 900;
+    color: rgb(77, 63, 59);
+}
+
+.todolist-date {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 10px;
+    font-weight: 500;
+    color: gray;
+}
+
+.todolist-add {
+    margin: 10px 10px 0 10px;
+    display: flex;
+    height: 30px;
+}
+
+.todolist-add-text {
+    padding-left: 10px;
+    flex: 8;
+    font-size: 15px;
+    border: 1px solid lightgray;
+    border-top-left-radius: 10px;
+    outline: none;
+}
+
+.todolist-add-submit {
+    flex: 2;
+    background: rgb(77, 63, 59);
+    color: white;
+    border: 1px;
+    border-top-right-radius: 10px;
+    outline: none;
+}
+
+.todolist-add-submit:active {
+    background: rgb(34, 70, 34);
+}
+
+.todolist-list {
+    max-height: 600px;
+    overflow-y: scroll;
+}
+
+.todo {
+    height: 50px;
+    margin-left: 10px;
     line-height: 50px;
     border: lightgray solid 0.5px;
-    border-top:none;
+    border-top: none;
     box-sizing: border-box;
-    background:white;
+    background: white;
     position: relative;
 }
-.done{
+
+.done {
     text-decoration-line: line-through;
 }
-.todo.edit{
-    background:yellowgreen;
-    display:flex;
+
+.todo.edit {
+    background: yellowgreen;
+    display: flex;
+    text-decoration-line: none;
+
 }
-input.edit{
-    font-size:18px;
-    margin:5px 0;
-    flex:1;
+
+input.edit {
+    font-size: 18px;
+    margin: 5px 0;
+    flex: 1;
 }
-.button-delete{
+
+.button-delete {
     position: absolute;
-    right:10px;
-    bottom:0;
+    right: 10px;
+    bottom: 0;
     cursor: pointer;
 }
-.todolist-footer{
-    padding:15px 20px;
-    color:gray;
-    font-size:10px;
+
+.todolist-footer {
+    padding: 15px 20px;
+    color: gray;
+    font-size: 10px;
 }
-input[type='checkbox']{
-    -webkit-transform: scale(2); 
-    margin:0 30px;
+
+input[type='checkbox'] {
+    -webkit-transform: scale(2);
+    margin: 0 30px;
 }
+
 /* scroll-bar style */
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+    width: 10px;
 }
+
 /* Track */
 ::-webkit-scrollbar-track {
-  background: transparent; 
+    background: transparent;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888; 
+    background: #888;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+    background: #555;
 }
