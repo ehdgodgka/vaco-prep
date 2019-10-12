@@ -7,7 +7,7 @@ function getToday() {
   };
   return todayObj;
 }
-var dateChosen = {
+var dateSelected = {
   year: 0,
   month: 0,
   date: 0,
@@ -16,14 +16,18 @@ var dateChosen = {
     return day.getDay();
   },
   print: function() {
-    console.log('dateChosen:' + this.year, this.month, this.date);
+    console.log('dateSelected:' + this.year, this.month, this.date);
   }
 };
-var monthlyChosen = {
+var monthlyShown = {
   year: 0,
   month: 0,
+  set: function(year, month) {
+    this.year = year;
+    this.month = month;
+  },
   print: function() {
-    console.log('monthlyChosen:' + this.year, this.month);
+    console.log('monthlyShown:' + this.year, this.month);
   }
 };
 var todolistbyDate = {};
@@ -33,39 +37,39 @@ var todayMark = null;
 var filterType = 'all';
 
 function calendarInit() {
+  // 이번달로 초기화
   var today = getToday();
-  // 달력 년,월설정:이번달로
-  setMonthlyHead(today.year, today.month);
-  // 달력 날짜 테이블을 설정,출력합니다
-  setMonthlyTable();
+  monthlyShown.set(today.year, today.month);
+  setMonthly();
   // 날짜선택 초기값: 오늘
-  setDateChosen(today.year, today.month, today.date);
+  saveDateSelected(today.date);
 
   // 월 변경 기능을 넣습니다
-  DateHighlight(todayMark);
+  highlightDate(todayMark);
   changeMonth();
   // 날짜 선택 기능을 넣습니다.
-  chooseDate();
+  selectDate();
   goButton();
 }
 
-function setMonthlyHead(year, month) {
-  if (year && month) {
-    monthlyChosen.year = year;
-    monthlyChosen.month = month;
-  }
+function setMonthly() {
+  setMonthlyHead();
+  setMonthlyTable();
+}
+
+function setMonthlyHead() {
   var calYear = document.querySelector('.year');
   var calMonth = document.querySelector('.month');
-  calYear.textContent = monthlyChosen.year;
-  calMonth.textContent = monthToString(monthlyChosen.month);
+  calYear.textContent = monthlyShown.year;
+  calMonth.textContent = monthToString(monthlyShown.month);
 }
 
 function setMonthlyTable() {
-  var dateStart = new Date(monthlyChosen.year, monthlyChosen.month, 1);
+  var dateStart = new Date(monthlyShown.year, monthlyShown.month, 1);
   var fillDate = dateStart;
   var fillMonth = fillDate.getMonth();
   var fillDay = fillDate.getDay();
-  //feel Monthly-table
+  //fill Monthly-table
   for (var row = 1; row < 7; row++) {
     var calRow = document.querySelector('.row' + row);
 
@@ -79,21 +83,21 @@ function setMonthlyTable() {
           var today = getToday();
           //TODO: 선택 날짜 표시
           if (
-            monthlyChosen.year === dateChosen.year &&
-            monthlyChosen.month === dateChosen.month
+            monthlyShown.year === dateSelected.year &&
+            monthlyShown.month === dateSelected.month
           ) {
-            if (fillDate.getDate() == dateChosen.date) {
-              DateHighlight(calRow.children[col]);
+            if (fillDate.getDate() == dateSelected.date) {
+              highlightDate(calRow.children[col]);
             }
           } else {
-            cancelDateHighlight(highlighted);
+            removeHighlight(highlighted);
           }
 
           //TODO:오늘 표시
 
           if (
-            monthlyChosen.year === today.year &&
-            monthlyChosen.month === today.month
+            monthlyShown.year === today.year &&
+            monthlyShown.month === today.month
           ) {
             if (fillDate.getDate() === today.date) {
               todayMark = calRow.children[col];
@@ -123,32 +127,31 @@ function changeMonth() {
 
   function change(event) {
     console.log(event);
-    cancelDateHighlight(highlighted);
+    removeHighlight(highlighted);
 
     if (event.target.classList.contains('bt-last-month')) {
-      if (monthlyChosen.month === 0) {
-        monthlyChosen.month = 11;
-        monthlyChosen.year -= 1;
+      if (monthlyShown.month === 0) {
+        monthlyShown.month = 11;
+        monthlyShown.year -= 1;
         console.log(event, '이전달은 전년12월');
       } else {
-        monthlyChosen.month -= 1;
-        console.log(monthlyChosen.month);
+        monthlyShown.month -= 1;
+        console.log(monthlyShown.month);
         console.log(event, '이전달로 이동합시다');
       }
       setMonthlyHead();
       setMonthlyTable();
     } else if (event.target.classList.contains('bt-next-month')) {
-      if (monthlyChosen.month === 11) {
-        monthlyChosen.month = 0;
-        monthlyChosen.year += 1;
+      if (monthlyShown.month === 11) {
+        monthlyShown.month = 0;
+        monthlyShown.year += 1;
         console.log(event, '다음달은 내년1월');
       } else {
-        monthlyChosen.month += 1;
-        console.log(monthlyChosen.month);
+        monthlyShown.month += 1;
+        console.log(monthlyShown.month);
         console.log(event, '다음달로 이동합시다');
       }
-      setMonthlyHead();
-      setMonthlyTable();
+      setMonthly();
     }
   }
 }
@@ -164,30 +167,29 @@ function goButton() {
       var today = getToday();
       AlreadyThere(today);
     } else if (event.target.className === 'button-go-chosen') {
-      AlreadyThere(dateChosen);
+      AlreadyThere(dateSelected);
     }
-    setMonthlyHead();
-    setMonthlyTable();
+    setMonthly();
     function AlreadyThere(object) {
       if (
-        object.year === monthlyChosen.year &&
-        object.month === monthlyChosen.month
+        object.year === monthlyShown.year &&
+        object.month === monthlyShown.month
       ) {
         return true;
       } else {
-        monthlyChosen.year = object.year;
-        monthlyChosen.month = object.month;
+        monthlyShown.year = object.year;
+        monthlyShown.month = object.month;
         return false;
       }
     }
   }
 }
-function chooseDate() {
-  var dateTable = document.querySelector('.monthly-table');
+function selectDate() {
   var dateShow = document.querySelector('.date_chosen-date');
   var dayShow = document.querySelector('.date_chosen-day');
-  dateShow.textContent = dateChosen.date;
-  dayShow.textContent = dayToString(dateChosen.day());
+  var dateTable = document.querySelector('.monthly-table');
+  dateShow.textContent = dateSelected.date;
+  dayShow.textContent = dayToString(dateSelected.day());
 
   dateTable.addEventListener('click', (event) => {
     if (
@@ -195,45 +197,36 @@ function chooseDate() {
       event.target.textContent &&
       !parseInt(event.target.textContent).isNaN
     ) {
-      //highlight delete
-      cancelDateHighlight(highlighted);
-
-      console.log(event.target);
-
-      //   highlighted = event.target;
-      //   event.target.style.background = 'yellowgreen';
-      DateHighlight(event.target);
-      //mark date
-      setDateChosen(
-        monthlyChosen.year,
-        monthlyChosen.month,
-        event.target.textContent
-      );
-
-      dateShow.textContent = dateChosen.date;
-      dayShow.textContent = dayToString(dateChosen.day());
-      //DO 0: 날짜가 바뀌면 ! todo list 가 바껴야한다
+      //1. 선택날짜 강조
+      removeHighlight(highlighted);
+      highlightDate(event.target);
+      //2. 선택날짜 저장
+      saveDateSelected(event.target.textContent);
+      //3.선택날짜 표시
+      dateShow.textContent = dateSelected.date;
+      dayShow.textContent = dayToString(dateSelected.day());
+      //4.선택날짜 todolist
       todolistInit();
     }
   });
 }
 
-function setDateChosen(year, month, date) {
-  dateChosen.year = year;
-  dateChosen.month = month;
-  dateChosen.date = date;
+function saveDateSelected(date) {
+  dateSelected.year = monthlyShown.year;
+  dateSelected.month = monthlyShown.month;
+  dateSelected.date = date;
 }
 
-function DateHighlight(dateTableCell) {
+function highlightDate(dateTableCell) {
   console.log(dateTableCell);
   highlighted = dateTableCell;
   dateTableCell.style.background = 'yellowgreen';
   dateTableCell.style.borderRadius = '50px';
 }
 
-function cancelDateHighlight(dateHighlight) {
-  if (dateHighlight) {
-    dateHighlight.style.background = '';
+function removeHighlight(dateHighlighted) {
+  if (dateHighlighted) {
+    dateHighlighted.style.background = '';
   }
 }
 function dayToString(day) {
@@ -352,19 +345,19 @@ function setTodolistDate() {
   var todolistDate = document.querySelector('.todolist-date');
   todolistDate.textContent =
     '' +
-    dateChosen.year +
+    dateSelected.year +
     '.' +
-    ('0' + (dateChosen.month + 1)).slice(-2) +
+    ('0' + (dateSelected.month + 1)).slice(-2) +
     '.' +
-    ('0' + dateChosen.date).slice(-2) +
+    ('0' + dateSelected.date).slice(-2) +
     '.' +
-    dayToString(dateChosen.day())
+    dayToString(dateSelected.day())
       .slice(0, 3)
       .toUpperCase();
   var keyDate =
-    dateChosen.year +
-    ('0' + (dateChosen.month + 1)).slice(-2) +
-    ('0' + dateChosen.date).slice(-2) +
+    dateSelected.year +
+    ('0' + (dateSelected.month + 1)).slice(-2) +
+    ('0' + dateSelected.date).slice(-2) +
     '';
   return keyDate;
 }
