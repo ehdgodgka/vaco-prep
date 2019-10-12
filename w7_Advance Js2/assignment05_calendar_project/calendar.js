@@ -1,3 +1,12 @@
+function getToday() {
+  var today = new Date();
+  var todayObj = {
+    year: today.getFullYear(),
+    month: today.getMonth(),
+    date: today.getDate()
+  };
+  return todayObj;
+}
 var dateChosen = {
   year: 0,
   month: 0,
@@ -5,53 +14,99 @@ var dateChosen = {
   day: function() {
     var day = new Date(this.year, this.month, this.date);
     return day.getDay();
+  },
+  print: function() {
+    console.log('dateChosen:' + this.year, this.month, this.date);
+  }
+};
+var monthlyChosen = {
+  year: 0,
+  month: 0,
+  print: function() {
+    console.log('monthlyChosen:' + this.year, this.month);
   }
 };
 var todolistbyDate = {};
 var thisTodolist = [];
 var highlighted;
+var todayMark = null;
 var filterType = 'all';
 
 function calendarInit() {
-  // 오늘로 dateChosen을 설정해줍니다.
-  var today = new Date();
-  console.log(today);
-  dateChosen.year = today.getFullYear();
-  dateChosen.month = today.getMonth();
-  dateChosen.date = today.getDate();
-  // 달력 년,월 헤드를 설정,출력합니다
-  setMonthlyHead();
+  var today = getToday();
+  // 달력 년,월설정:이번달로
+  setMonthlyHead(today.year, today.month);
   // 달력 날짜 테이블을 설정,출력합니다
   setMonthlyTable();
+  // 날짜선택 초기값: 오늘
+  setDateChosen(today.year, today.month, today.date);
+
   // 월 변경 기능을 넣습니다
+  DateHighlight(todayMark);
   changeMonth();
   // 날짜 선택 기능을 넣습니다.
   chooseDate();
+  goButton();
 }
 
-function setMonthlyHead() {
-  var year = document.querySelector('.year');
-  var month = document.querySelector('.month');
-  year.textContent = dateChosen.year + '  ';
-  month.textContent = monthToString(dateChosen.month);
+function setMonthlyHead(year, month) {
+  if (year && month) {
+    monthlyChosen.year = year;
+    monthlyChosen.month = month;
+  }
+  var calYear = document.querySelector('.year');
+  var calMonth = document.querySelector('.month');
+  calYear.textContent = monthlyChosen.year;
+  calMonth.textContent = monthToString(monthlyChosen.month);
 }
 
 function setMonthlyTable() {
-  var dateStart = new Date(dateChosen.year, dateChosen.month, 1);
-  var dateTemp = dateStart;
-  var fillMonth = dateTemp.getMonth();
-  var fillDay = dateTemp.getDay();
-  for (var n = 1; n < 7; n++) {
-    var tr = document.querySelector('.row' + n);
+  var dateStart = new Date(monthlyChosen.year, monthlyChosen.month, 1);
+  var fillDate = dateStart;
+  var fillMonth = fillDate.getMonth();
+  var fillDay = fillDate.getDay();
+  //feel Monthly-table
+  for (var row = 1; row < 7; row++) {
+    var calRow = document.querySelector('.row' + row);
+
     for (var col = 0; col < 7; col++) {
-      if (n === 1 && col < fillDay) {
-        tr.children[col].textContent = '';
+      if (row === 1 && col < fillDay) {
+        calRow.children[col].textContent = '';
       } else {
-        if (dateStart.getMonth() === fillMonth) {
-          tr.children[col].textContent = dateTemp.getDate();
-          dateTemp.setDate(dateTemp.getDate() + 1);
+        if (fillDate.getMonth() === fillMonth) {
+          calRow.children[col].textContent = fillDate.getDate();
+
+          var today = getToday();
+          //TODO: 선택 날짜 표시
+          if (
+            monthlyChosen.year === dateChosen.year &&
+            monthlyChosen.month === dateChosen.month
+          ) {
+            if (fillDate.getDate() == dateChosen.date) {
+              DateHighlight(calRow.children[col]);
+            }
+          } else {
+            cancelDateHighlight(highlighted);
+          }
+
+          //TODO:오늘 표시
+
+          if (
+            monthlyChosen.year === today.year &&
+            monthlyChosen.month === today.month
+          ) {
+            if (fillDate.getDate() === today.date) {
+              todayMark = calRow.children[col];
+              calRow.children[col].classList.add('today');
+            }
+          } else {
+            todayMark.classList.remove('today');
+          }
+
+          fillDate.setDate(fillDate.getDate() + 1); //다음날짜 채우기
         } else {
-          tr.children[col].textContent = '';
+          //이번달 날짜가 아니면 비우기
+          calRow.children[col].textContent = '';
         }
       }
     }
@@ -68,28 +123,28 @@ function changeMonth() {
 
   function change(event) {
     console.log(event);
-    cancelDateHighlight();
+    cancelDateHighlight(highlighted);
 
     if (event.target.classList.contains('bt-last-month')) {
-      if (dateChosen.month === 0) {
-        dateChosen.month = 11;
-        dateChosen.year -= 1;
+      if (monthlyChosen.month === 0) {
+        monthlyChosen.month = 11;
+        monthlyChosen.year -= 1;
         console.log(event, '이전달은 전년12월');
       } else {
-        dateChosen.month -= 1;
-        console.log(dateChosen.month);
+        monthlyChosen.month -= 1;
+        console.log(monthlyChosen.month);
         console.log(event, '이전달로 이동합시다');
       }
       setMonthlyHead();
       setMonthlyTable();
     } else if (event.target.classList.contains('bt-next-month')) {
-      if (dateChosen.month === 11) {
-        dateChosen.month = 0;
-        dateChosen.year += 1;
+      if (monthlyChosen.month === 11) {
+        monthlyChosen.month = 0;
+        monthlyChosen.year += 1;
         console.log(event, '다음달은 내년1월');
       } else {
-        dateChosen.month += 1;
-        console.log(dateChosen.month);
+        monthlyChosen.month += 1;
+        console.log(monthlyChosen.month);
         console.log(event, '다음달로 이동합시다');
       }
       setMonthlyHead();
@@ -97,7 +152,36 @@ function changeMonth() {
     }
   }
 }
-
+//  DO : 바로 이동 구현하기
+function goButton() {
+  var goTodayButton = document.querySelector('.button-go-today');
+  var goChosenButton = document.querySelector('.button-go-chosen');
+  [goTodayButton, goChosenButton].forEach((item) => {
+    item.addEventListener('click', gotoCal, event);
+  });
+  function gotoCal() {
+    if (event.target.className === 'button-go-today') {
+      var today = getToday();
+      AlreadyThere(today);
+    } else if (event.target.className === 'button-go-chosen') {
+      AlreadyThere(dateChosen);
+    }
+    setMonthlyHead();
+    setMonthlyTable();
+    function AlreadyThere(object) {
+      if (
+        object.year === monthlyChosen.year &&
+        object.month === monthlyChosen.month
+      ) {
+        return true;
+      } else {
+        monthlyChosen.year = object.year;
+        monthlyChosen.month = object.month;
+        return false;
+      }
+    }
+  }
+}
 function chooseDate() {
   var dateTable = document.querySelector('.monthly-table');
   var dateShow = document.querySelector('.date_chosen-date');
@@ -112,14 +196,20 @@ function chooseDate() {
       !parseInt(event.target.textContent).isNaN
     ) {
       //highlight delete
-      cancelDateHighlight();
+      cancelDateHighlight(highlighted);
 
       console.log(event.target);
-      highlighted = event.target;
-      event.target.style.background = 'yellowgreen';
-      //mark date
 
-      dateChosen.date = event.target.textContent;
+      //   highlighted = event.target;
+      //   event.target.style.background = 'yellowgreen';
+      DateHighlight(event.target);
+      //mark date
+      setDateChosen(
+        monthlyChosen.year,
+        monthlyChosen.month,
+        event.target.textContent
+      );
+
       dateShow.textContent = dateChosen.date;
       dayShow.textContent = dayToString(dateChosen.day());
       //DO 0: 날짜가 바뀌면 ! todo list 가 바껴야한다
@@ -128,9 +218,22 @@ function chooseDate() {
   });
 }
 
-function cancelDateHighlight() {
-  if (highlighted) {
-    highlighted.style.background = '';
+function setDateChosen(year, month, date) {
+  dateChosen.year = year;
+  dateChosen.month = month;
+  dateChosen.date = date;
+}
+
+function DateHighlight(dateTableCell) {
+  console.log(dateTableCell);
+  highlighted = dateTableCell;
+  dateTableCell.style.background = 'yellowgreen';
+  dateTableCell.style.borderRadius = '50px';
+}
+
+function cancelDateHighlight(dateHighlight) {
+  if (dateHighlight) {
+    dateHighlight.style.background = '';
   }
 }
 function dayToString(day) {
@@ -163,6 +266,7 @@ function monthToString(month) {
   ];
   return months[month];
 }
+
 setTodolistFunction();
 function todolistInit() {
   console.log('todolist를 구성합니다');
@@ -175,8 +279,7 @@ function todolistInit() {
   // DO 2:현재 날짜에 TODO 리스트가 있으면 보여준다. 수도 출력 .
   showThisdateTodolist();
   // DO 1:todolist의 기능: todo추가,현재 상태 저장
-  //TODO 4: 완료 미완료 필터링 ,날짜별 todo 클리어 기능을 등록합니다.
-  
+  //DO 4: 완료 미완료 필터링 ,날짜별 todo 클리어 기능을 등록합니다.
 
   // DO 3:todo 체크 ,수정,삭제 , 현재 상태 저장
   setTodoFunction();
@@ -310,33 +413,30 @@ function setTodolistFunction() {
   var clearButton = document.querySelector('.footer-todo-clear');
   clearButton.addEventListener('click', (event) => {
     // var result= window.confirm('완료한 일을 지울겁니까 ? 정말 ? ');
-    var all= thisTodolist.length;
-    var todo=printTodoLeft();
-    var done=all-todo;
+    var all = thisTodolist.length;
+    var todo = printTodoLeft();
+    var done = all - todo;
     if (done > 0) {
-    //     console.log('done:'+done);
-    //TODO4-3 : 한일클리어 기능
+      //     console.log('done:'+done);
+      //DO4-3 : 한일클리어 기능
       if (window.confirm('완료한일을 지울겁니까 정말?')) {
-        while(done>0){
-            thisTodolist.forEach((item, index) => {
-                console.log(index,item);
-              if (item.done) {
-                thisTodolist.splice(index, 1);
-                 done--; 
-             }
+        while (done > 0) {
+          thisTodolist.forEach((item, index) => {
+            console.log(index, item);
+            if (item.done) {
+              thisTodolist.splice(index, 1);
+              done--;
             }
-            );
+          });
         }
         saveThisList();
         todolistInit();
-      }else{}
+      } else {
+      }
     } else {
       alert('완료한일이 없습니다! ');
     }
-
   });
-  
-
 }
 function addTodo(string, check) {
   //DOM에 append 해서반영합니다

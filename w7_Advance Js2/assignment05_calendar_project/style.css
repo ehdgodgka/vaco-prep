@@ -18,11 +18,13 @@ body {
 }
 
 .calendar .date_chosen {
-    padding-top: 30px;
+    margin:0 -5px 0 0px;
+    padding: 30px 0;
     text-align: center;
     width: 200px;
     color: white;
     background-color: rgb(77, 63, 59);
+    border-radius : 5px 0 0 5px;
 }
 
 .calendar .date_chosen-day {
@@ -34,7 +36,31 @@ body {
     font-size: 4em;
     font-weight: 800;
 }
+.button-go{
+    
+    font-size:12px;
 
+}
+ .button-go-today{
+    text-align: center;
+    margin:10px;
+    padding:5px;
+    width:40px;
+border: orangered 2px solid ;
+border-radius:5px;
+background: lightgray;
+
+}
+ .button-go-chosen{
+    text-align: center;
+    width:40px;
+    border: lightgray 2px solid ;
+    margin :10px;
+    padding:5px;
+background:yellowgreen;
+border-radius:5px;
+
+}
 .calendar .monthly {
     height: 100%;
 
@@ -50,23 +76,33 @@ body {
 
 .monthly-table {
     font-size: 12px;
+    border-spacing:30px 3px;
+
 
 }
-
+.today{
+    border:solid orangered 3px;
+    border-radius:50px;
+}
 td {
     text-align: center;
-    width: 60px;
+    width: 30px;
+    margin:0 60px;
     padding: 5px 0;
     color: gray
 }
 
 .bt-last-month {
+    cursor: pointer;
     float: left;
+    border:none;
     margin-left: 50px;
 }
 
 .bt-next-month {
+    cursor: pointer;
     float: right;
+    border:none;
     margin-right: 50px;
 }
 
