@@ -83,12 +83,13 @@ border-radius:5px;
 .today{
     border:solid orangered 3px;
     border-radius:50px;
+    box-sizing: border-box;
 }
 td {
     text-align: center;
     width: 30px;
+    height:30px;
     margin:0 60px;
-    padding: 5px 0;
     color: gray
 }
 

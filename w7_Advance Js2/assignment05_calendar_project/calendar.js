@@ -118,7 +118,7 @@ function setMonthlyTable() {
 }
 
 function addChangeMonth() {
-  //월 변경 버튼 
+  //월 변경 버튼
   var buttonMonthChange = document.querySelectorAll('button');
 
   buttonMonthChange.forEach((item) =>
@@ -135,8 +135,8 @@ function addChangeMonth() {
       } else {
         monthlyShown.month -= 1;
       }
-      setMonthlyHead();
-      setMonthlyTable();
+      //   setMonthlyHead();
+      //   setMonthlyTable();
     } else if (event.target.classList.contains('bt-next-month')) {
       if (monthlyShown.month === 11) {
         monthlyShown.month = 0;
@@ -144,8 +144,8 @@ function addChangeMonth() {
       } else {
         monthlyShown.month += 1;
       }
-      setMonthly();
     }
+    setMonthly();
   }
 }
 //  DO : 바로 이동 구현하기
@@ -199,7 +199,7 @@ function addSelectDate() {
       dateShow.textContent = dateSelected.date;
       dayShow.textContent = dayToString(dateSelected.day());
       //4.선택날짜 todolist
-      todolistInit();
+      resetTodolist();
     }
   });
 }
@@ -253,9 +253,71 @@ function monthToString(month) {
   return months[month];
 }
 
-setTodolistFunction();
-function todolistInit() {
-  console.log('todolist를 구성합니다');
+function TodolistInit() {
+    //1.할일 추가 기능  (체크박스와 할일)
+    var addTodoButton = document.querySelector('.todolist-add-submit');
+    addTodoButton.addEventListener('click', addTodo);
+  
+    function addTodo() {
+      var addTodoText = document.querySelector('.todolist-add-text');
+      if (addTodoText.value) {// 입력값 존재시 할일 추가
+        //할일 리스트를 할일 객체 배열로 저장
+        var todoObj = { todo: addTodoText.value, done: false };
+        thisTodolist.push(todoObj);
+        appendTodo(addTodoText.value);
+        addTodoText.value = '';
+        saveThisList();
+        resetTodolist();
+      }
+    }
+    //2. 필터링 변경 기능 
+    var filterButtons = document.querySelector('.footer-filter');
+    filterButtons.addEventListener('click', (event) => {
+      if (
+        event.target.classList.contains('button-filter') &&
+        !event.target.classList.contains('filter-on')
+      ) {
+        // 먼저 현재 필터를 끄고
+        event.currentTarget
+          .querySelector('.filter-on')
+          .classList.toggle('filter-on');
+        // 지금 필터를 키자!
+        event.target.classList.toggle('filter-on');
+        filterType = event.target.textContent;
+        resetTodolist();
+      }
+    });
+    //DO 4-2 클리어 기능추가 및 확인: 한번더 확인하는 절차를 거치면 좋을것같은데
+    var clearButton = document.querySelector('.footer-todo-clear');
+    clearButton.addEventListener('click', (event) => {
+      // var result= window.confirm('완료한 일을 지울겁니까 ? 정말 ? ');
+      var all = thisTodolist.length;
+      var todo = printTodoLeft();
+      var done = all - todo;
+      if (done > 0) {
+        //     console.log('done:'+done);
+        //DO4-3 : 한일클리어 기능
+        if (window.confirm('완료한일을 지울겁니까 정말?')) {
+          while (done > 0) {
+            thisTodolist.forEach((item, index) => {
+              console.log(index, item);
+              if (item.done) {
+                thisTodolist.splice(index, 1);
+                done--;
+              }
+            });
+          }
+          saveThisList();
+          resetTodolist();
+        } else {
+        }
+      } else {
+        alert('완료한일이 없습니다! ');
+      }
+    });
+  }
+
+function resetTodolist() {
   //이전 todo 들을 지웁니다
   var todolist = document.querySelector('.todolist-list');
   while (todolist.firstChild) {
@@ -287,14 +349,14 @@ function showThisdateTodolist() {
         //각 배열의 값에 따라 todo element를 만들어서 dom에 추가 해서 보이게 한다 .
         if (filterType === 'todo') {
           if (!item.done) {
-            addTodo(item.todo, item.done);
+            appendTodo(item.todo, item.done);
           }
         } else if (filterType === 'done') {
           if (item.done) {
-            addTodo(item.todo, item.done);
+            appendTodo(item.todo, item.done);
           }
         } else {
-          addTodo(item.todo, item.done);
+          appendTodo(item.todo, item.done);
         }
       });
     }
@@ -355,76 +417,8 @@ function setTodolistDate() {
   return keyDate;
 }
 
-function setTodolistFunction() {
-  console.log('Todolist');
-  //DO 1-1: 할일을 추가 (체크박스와 할일)
-  var addTodoButton = document.querySelector('.todolist-add-submit');
-  console.log(addTodoButton);
-  //할일추가기능
-  addTodoButton.addEventListener('click', checkNadd);
 
-  function checkNadd() {
-    // 빈칸인지 확인합니다.
-    var addTodoText = document.querySelector('.todolist-add-text');
-    if (addTodoText.value) {
-      //DO 1-2: 변경사항을 json 으로 날짜를 키로 저장합니다.
-      var todoObj = { todo: addTodoText.value, done: false };
-      thisTodolist.push(todoObj);
-      // 빈칸이 아니면 추가합니다.
-      addTodo(addTodoText.value);
-      saveThisList();
-      todolistInit();
-      addTodoText.value = '';
-    }
-  }
-  // DO 4-1:필터링 변경 기능
-  var filterButtons = document.querySelector('.footer-filter');
-  filterButtons.addEventListener('click', (event) => {
-    if (
-      event.target.classList.contains('button-filter') &&
-      !event.target.classList.contains('filter-on')
-    ) {
-      // 먼저 현재 필터를 끄고
-      event.target.parentElement
-        .querySelector('.filter-on')
-        .classList.toggle('filter-on');
-      // 지금 필터를 키자!
-      event.target.classList.toggle('filter-on');
-      filterType = event.target.textContent;
-      console.log(filterType);
-      todolistInit();
-    }
-  });
-  //DO 4-2 클리어 기능추가 및 확인: 한번더 확인하는 절차를 거치면 좋을것같은데
-  var clearButton = document.querySelector('.footer-todo-clear');
-  clearButton.addEventListener('click', (event) => {
-    // var result= window.confirm('완료한 일을 지울겁니까 ? 정말 ? ');
-    var all = thisTodolist.length;
-    var todo = printTodoLeft();
-    var done = all - todo;
-    if (done > 0) {
-      //     console.log('done:'+done);
-      //DO4-3 : 한일클리어 기능
-      if (window.confirm('완료한일을 지울겁니까 정말?')) {
-        while (done > 0) {
-          thisTodolist.forEach((item, index) => {
-            console.log(index, item);
-            if (item.done) {
-              thisTodolist.splice(index, 1);
-              done--;
-            }
-          });
-        }
-        saveThisList();
-        todolistInit();
-      } else {
-      }
-    } else {
-      alert('완료한일이 없습니다! ');
-    }
-  });
-}
-function addTodo(string, check) {
+function appendTodo(string, check) {
   //DOM에 append 해서반영합니다
   // input check box + todo 내용 해서 ~
   var todolist = document.querySelector('.todolist-list');
@@ -480,7 +474,7 @@ function checkTodo() {
       }
       printTodoLeft();
       saveThisList();
-      todolistInit();
+      resetTodolist();
     }
   });
 }
@@ -490,10 +484,11 @@ function deleteNmodifyTodo() {
   var todos = document.querySelector('.todolist-list');
   todos.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-delete')) {
-      console.log('delete!!');
+      
       var index = Array.from(todos.children).indexOf(
         event.target.parentElement
       );
+      console.log('delete!!'+index);
       todos.removeChild(event.target.parentElement);
       // 없앤애의 인텍스를 받아서 배열에서 slice 해야한다
       thisTodolist.splice(index, 1);
@@ -586,4 +581,5 @@ function deleteNmodifyTodo() {
 }
 
 calendarInit();
-todolistInit();
+TodolistInit();
+resetTodolist();
