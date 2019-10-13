@@ -37,19 +37,19 @@ var todayMark = null;
 var filterType = 'all';
 
 function calendarInit() {
-  // 이번달로 초기화
+  //1.이번달로 초기화
   var today = getToday();
   monthlyShown.set(today.year, today.month);
   setMonthly();
-  // 날짜선택 초기값: 오늘
+  //2.날짜선택 초기화: 오늘
   saveDateSelected(today.date);
-
-  // 월 변경 기능을 넣습니다
   highlightDate(todayMark);
-  changeMonth();
-  // 날짜 선택 기능을 넣습니다.
-  selectDate();
-  goButton();
+  //3.월 변경 기능 추가
+  addChangeMonth();
+  //4.날짜 선택 기능 추가
+  addSelectDate();
+  //5.바로가기 버튼 활성화
+  addGoButton();
 }
 
 function setMonthly() {
@@ -117,8 +117,8 @@ function setMonthlyTable() {
   }
 }
 
-function changeMonth() {
-  //버튼을 받읍시당 ~
+function addChangeMonth() {
+  //월 변경 버튼 
   var buttonMonthChange = document.querySelectorAll('button');
 
   buttonMonthChange.forEach((item) =>
@@ -126,18 +126,14 @@ function changeMonth() {
   );
 
   function change(event) {
-    console.log(event);
     removeHighlight(highlighted);
 
     if (event.target.classList.contains('bt-last-month')) {
       if (monthlyShown.month === 0) {
         monthlyShown.month = 11;
         monthlyShown.year -= 1;
-        console.log(event, '이전달은 전년12월');
       } else {
         monthlyShown.month -= 1;
-        console.log(monthlyShown.month);
-        console.log(event, '이전달로 이동합시다');
       }
       setMonthlyHead();
       setMonthlyTable();
@@ -145,18 +141,15 @@ function changeMonth() {
       if (monthlyShown.month === 11) {
         monthlyShown.month = 0;
         monthlyShown.year += 1;
-        console.log(event, '다음달은 내년1월');
       } else {
         monthlyShown.month += 1;
-        console.log(monthlyShown.month);
-        console.log(event, '다음달로 이동합시다');
       }
       setMonthly();
     }
   }
 }
 //  DO : 바로 이동 구현하기
-function goButton() {
+function addGoButton() {
   var goTodayButton = document.querySelector('.button-go-today');
   var goChosenButton = document.querySelector('.button-go-chosen');
   [goTodayButton, goChosenButton].forEach((item) => {
@@ -184,7 +177,7 @@ function goButton() {
     }
   }
 }
-function selectDate() {
+function addSelectDate() {
   var dateShow = document.querySelector('.date_chosen-date');
   var dayShow = document.querySelector('.date_chosen-day');
   var dateTable = document.querySelector('.monthly-table');
