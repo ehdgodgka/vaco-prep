@@ -252,8 +252,8 @@ function monthToString(month) {
   ];
   return months[month];
 }
-// DO 1:todolist의 기능: todo추가,현재 상태 저장
-//DO 4: 완료 미완료 필터링 ,날짜별 todo 클리어 기능을 등록합니다.
+ // DO 1:todolist의 기능: todo추가,현재 상태 저장
+  //DO 4: 완료 미완료 필터링 ,날짜별 todo 클리어 기능을 등록합니다.
 function TodolistInit() {
   //1-1.할일 추가 기능
   var addTodoButton = document.querySelector('.todolist-add-submit');
@@ -326,25 +326,25 @@ function resetTodolist() {
     todolist.removeChild(todolist.firstChild);
   }
   thisTodolist = [];
-  //2-2.현재 날짜에 TODO 리스트가 있으면 출력
+  //2-2.현재 날짜에 TODO 리스트 출력
   showTodolist();
-  //2-3.보여지는 todolist 에 기능 추가 :
-
-  // DO 3:todo 체크 ,수정,삭제 , 현재 상태 저장
+  //2-3.todo 체크 ,수정,삭제 , 현재 상태 저장
   setTodoFunction();
 }
+
 function showTodolist() {
-  //3-1 todolist 날짜 표기
+  //3-1 todolist-date에 현재 날짜 표기
   setTodolistDate();
-  var keyDate = makeDateKey();
-  //3-2 todolist 내용표기
+  var keyDate = getDateKey();
+  console.log(keyDate);
   if (keyDate in todolistbyDate) {
-    //선택날짜의 할일 불러오기
+    //DO 2-1: 할일이있다:
+    //json을 오늘의 할일로 object 배열로 parsing
     thisTodolist = JSON.parse(todolistbyDate[keyDate]);
-    //※숫자가 key일때는 [] 로 불러온다는것 잊지 말기
+    //숫자가 key일때는 [] 로 불러온다는것 잊지 말기
     if (thisTodolist.length > 0) {
+      //출력할 할일이 있습니까 ? 출력해 주세요.
       thisTodolist.forEach((item) => {
-        // 현재 필터(all ,todo, done )에 맞게 출력하기
         //각 배열의 값에 따라 todo element를 만들어서 dom에 추가 해서 보이게 한다 .
         if (filterType === 'todo') {
           if (!item.done) {
@@ -360,7 +360,6 @@ function showTodolist() {
       });
     }
   }
-  //남은 todolist 개수 출력
   printTodoLeft();
 }
 function printTodoLeft() {
@@ -409,13 +408,13 @@ function setTodolistDate() {
       .slice(0, 3)
       .toUpperCase();
 }
-
-function makeDateKey() {
+function getDateKey() {
   var keyDate =
     dateSelected.year +
     ('0' + (dateSelected.month + 1)).slice(-2) +
     ('0' + dateSelected.date).slice(-2) +
     '';
+    console.log(keyDate);
   return keyDate;
 }
 
@@ -443,11 +442,8 @@ function appendTodo(string, check) {
   printTodoLeft();
 }
 function saveThisList() {
-  // key:날짜- value: json 으로 변경한 todo객체 배열 ...
-  // json <- Array[{todo:blabla,check:true or false },{todo:blabla, check:true or false},{ },{ },{ }]
-  console.log(thisTodolist);
-  todolistbyDate[setTodolistDate()] = JSON.stringify(thisTodolist);
-  console.log(todolistbyDate);
+  // key(날짜)- value(todo객체 배열)): json 으로 변경해서 저장 
+  todolistbyDate[getDateKey()] = JSON.stringify(thisTodolist);
 }
 
 function setTodoFunction() {
