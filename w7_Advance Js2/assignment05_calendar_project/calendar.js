@@ -198,7 +198,7 @@ function addSelectDate() {
       //3.선택날짜 표시
       dateShow.textContent = dateSelected.date;
       dayShow.textContent = dayToString(dateSelected.day());
-      //4.선택날짜 todolist
+      //4.선택날짜 todolist표시
       resetTodolist();
     }
   });
@@ -252,27 +252,26 @@ function monthToString(month) {
   ];
   return months[month];
 }
- // DO 1:todolist의 기능: todo추가,현재 상태 저장
-  //DO 4: 완료 미완료 필터링 ,날짜별 todo 클리어 기능을 등록합니다.
+
 function TodolistInit() {
-  //1-1.할일 추가 기능
+  //1.할일 추가 기능
   var addTodoButton = document.querySelector('.todolist-add-submit');
   addTodoButton.addEventListener('click', addTodo);
 
   function addTodo() {
     var addTodoText = document.querySelector('.todolist-add-text');
     if (addTodoText.value) {
-      // 입력값 존재시 할일 추가
       //할일 리스트를 할일 객체 배열로 저장
       var todoObj = { todo: addTodoText.value, done: false };
       thisTodolist.push(todoObj);
       appendTodo(addTodoText.value);
       addTodoText.value = '';
       saveThisList();
-      // resetTodolist();
+      //FIXME: resetTodolist가 있어야 다른 filter일때 오류가 없다.
+      resetTodolist();
     }
   }
-  //1-2. 필터링 변경 기능
+  //2. 필터링 변경 기능
   var filterButtons = document.querySelector('.footer-filter');
   filterButtons.addEventListener('click', (event) => {
     if (
@@ -289,7 +288,7 @@ function TodolistInit() {
       resetTodolist();
     }
   });
-  //DO 4-2 클리어 기능추가 및 확인: 한번더 확인하는 절차를 거치면 좋을것같은데
+  //3. 클리어 기능
   var clearButton = document.querySelector('.footer-todo-clear');
   clearButton.addEventListener('click', (event) => {
     // var result= window.confirm('완료한 일을 지울겁니까 ? 정말 ? ');
@@ -297,8 +296,6 @@ function TodolistInit() {
     var todo = printTodoLeft();
     var done = all - todo;
     if (done > 0) {
-      //     console.log('done:'+done);
-      //DO4-3 : 한일클리어 기능
       if (window.confirm('완료한일을 지울겁니까 정말?')) {
         while (done > 0) {
           thisTodolist.forEach((item, index) => {
@@ -320,32 +317,29 @@ function TodolistInit() {
 }
 
 function resetTodolist() {
-  //2-1.todolist 의 todo 모두 지우기
+  //1.todolist 의 todo 모두 지우기
   var todolist = document.querySelector('.todolist-list');
   while (todolist.firstChild) {
     todolist.removeChild(todolist.firstChild);
   }
   thisTodolist = [];
-  //2-2.현재 날짜에 TODO 리스트 출력
+  //2.현재 날짜에 TODO 리스트 출력
   showTodolist();
-  //2-3.todo 체크 ,수정,삭제 , 현재 상태 저장
-  setTodoFunction();
+
 }
 
 function showTodolist() {
-  //3-1 todolist-date에 현재 날짜 표기
+  //1. todolist 날짜 표기
   setTodolistDate();
   var keyDate = getDateKey();
-  console.log(keyDate);
+
+  //2. todolist 내용표기
   if (keyDate in todolistbyDate) {
-    //DO 2-1: 할일이있다:
-    //json을 오늘의 할일로 object 배열로 parsing
     thisTodolist = JSON.parse(todolistbyDate[keyDate]);
-    //숫자가 key일때는 [] 로 불러온다는것 잊지 말기
+    //※숫자가 key일때는 [] 로 불러온다는것 잊지 말기
     if (thisTodolist.length > 0) {
-      //출력할 할일이 있습니까 ? 출력해 주세요.
       thisTodolist.forEach((item) => {
-        //각 배열의 값에 따라 todo element를 만들어서 dom에 추가 해서 보이게 한다 .
+        //값 필터링
         if (filterType === 'todo') {
           if (!item.done) {
             appendTodo(item.todo, item.done);
@@ -360,67 +354,12 @@ function showTodolist() {
       });
     }
   }
+  //3. todolist 남은할일 표기
   printTodoLeft();
-}
-function printTodoLeft() {
-  var todo = 0;
-  var done = 0;
-  // 총할일
-  thisTodolist.forEach((item) => {
-    item.done ? done++ : todo++;
-  });
-
-  //   var todolist = document.querySelector('.todolist-list');
-  var todoNum = document.querySelector('.footer-todo-number');
-  if (todo > 0) {
-    // 할일이 있을때
-    todoNum.textContent = todo + 'todo left~';
-  } else {
-    todoNum.textContent = 'no todo!';
-  }
-  return todo;
-  //   if (todolist.childElementCount) {
-  //     // 할일이 있을때
-  //     var Todo = todolist.querySelectorAll('.todo').length;
-  //     var doneTodo = todolist.querySelectorAll('.done').length;
-  //     var Todoleft = Todo - doneTodo;
-  //     // 한일을 계산합니다
-  //     if (Todoleft > 0) {
-  //       todoNum.textContent = Todoleft + 'todo left~';
-  //     } else {
-  //       todoNum.textContent = 'no todo!';
-  //     }
-  //   } else {
-  //     // 할일이 없을떄
-  //     todoNum.textContent = 'no todo!';
-  //   }
-}
-function setTodolistDate() {
-  var todolistDate = document.querySelector('.todolist-date');
-  todolistDate.textContent =
-    dateSelected.year +
-    '.' +
-    ('0' + (dateSelected.month + 1)).slice(-2) +
-    '.' +
-    ('0' + dateSelected.date).slice(-2) +
-    '.' +
-    dayToString(dateSelected.day())
-      .slice(0, 3)
-      .toUpperCase();
-}
-function getDateKey() {
-  var keyDate =
-    dateSelected.year +
-    ('0' + (dateSelected.month + 1)).slice(-2) +
-    ('0' + dateSelected.date).slice(-2) +
-    '';
-    console.log(keyDate);
-  return keyDate;
 }
 
 function appendTodo(string, check) {
-  //DOM에 append 해서반영합니다
-  // input check box + todo 내용 해서 ~
+  //할일 출력
   var todolist = document.querySelector('.todolist-list');
   var checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
@@ -441,22 +380,63 @@ function appendTodo(string, check) {
   todolist.appendChild(todo);
   printTodoLeft();
 }
+
+function setTodolistDate() {
+  var todolistDate = document.querySelector('.todolist-date');
+  todolistDate.textContent =
+    dateSelected.year +
+    '.' +
+    ('0' + (dateSelected.month + 1)).slice(-2) +
+    '.' +
+    ('0' + dateSelected.date).slice(-2) +
+    '.' +
+    dayToString(dateSelected.day())
+      .slice(0, 3)
+      .toUpperCase();
+}
+
+function getDateKey() {
+  var keyDate =
+    dateSelected.year +
+    ('0' + (dateSelected.month + 1)).slice(-2) +
+    ('0' + dateSelected.date).slice(-2) +
+    '';
+  console.log(keyDate);
+  return keyDate;
+}
+
+function printTodoLeft() {
+  var todo = 0;
+  var done = 0;
+  // 남은 할일 세기
+  thisTodolist.forEach((item) => {
+    item.done ? done++ : todo++;
+  });
+
+  var todoNum = document.querySelector('.footer-todo-number');
+  if (todo > 0) {
+    todoNum.textContent = todo + 'todo left~';
+  } else {
+    todoNum.textContent = 'no todo!';
+  }
+  return todo;
+}
+
 function saveThisList() {
-  // key(날짜)- value(todo객체 배열)): json 으로 변경해서 저장 
+  // key(날짜)- value(todo객체 배열)): json 으로 변경해서 저장
   todolistbyDate[getDateKey()] = JSON.stringify(thisTodolist);
 }
 
 function setTodoFunction() {
-  //DO 3-1: 체크박스에 상태에 따라 check클래스를 토글을 시키도록 하자.
-  // check 클래스의 스타일에느 가운데 줄이 그이고 현재리스트의 체크여부, 전체리스트를 업데이트 합니다.
-  checkTodo();
-  //DO 3-2: 할일에 커서 올리면 생성되는 x 버튼으로 삭제할수있게 합니다. 현재리스트와 전체리스트를 업데이트 합니다
-  deleteNmodifyTodo();
-  //DO 3-3: 할일을 더블 클릭으로 수정할수있게 합니다 현재리스트와 전체리스트를 업데이트 합니다.
+  
+  //todo 체크기능
+  addCheckTodo();
+  //todo 수정 삭제 기능
+  addDeleteTodo();
+  addModifyTodo();
 }
-
-function checkTodo() {
-  var todos = document.querySelector('.todolist-list');
+var todos = document.querySelector('.todolist-list');
+function addCheckTodo() {
   todos.addEventListener('click', (event) => {
     if (event.target.tagName === 'INPUT') {
       var index = Array.from(todos.children).indexOf(
@@ -469,16 +449,64 @@ function checkTodo() {
         event.target.parentElement.classList.remove('done');
         thisTodolist[index].done = false;
       }
-      printTodoLeft();
       saveThisList();
-      resetTodolist();
+      printTodoLeft();
+      //FIXME:[지우기 대기 ]] resetTodolist();
     }
   });
 }
-function deleteNmodifyTodo() {
-  //hover 시에 삭제 버튼이 나타나게하기
-  //DO 3-2:할일을 삭제합니다
-  var todos = document.querySelector('.todolist-list');
+function addModifyTodo(){
+
+    todos.addEventListener('dblclick', (event) => {
+        var thisTodo = event.target;
+        if (thisTodo.classList.contains('todo')) {
+          // 수정할 todo 가 몇번째인지 기록
+          var index = Array.from(todos.children).indexOf(thisTodo);
+          // 원래 태그를 빼와서 저장해두기
+          var backup = [];
+          thisTodo.childNodes.forEach((item) => backup.push(item));
+    
+          var text = backup[1].wholeText;
+          console.log(text);
+          // 수정시작
+    
+          // 싹지우고
+          while (thisTodo.firstChild) {
+            thisTodo.removeChild(thisTodo.firstChild);
+          }
+          var editbox = document.createElement('input');
+          editbox.setAttribute.type = 'text';
+          editbox.value = text;
+          editbox.classList.add('edit');
+    
+          thisTodo.classList.add('edit');
+          thisTodo.appendChild(editbox);
+          //    thisTodo.firstChild.focus();
+          var editTodo = thisTodo.firstChild;
+          editTodo.focus();
+          editTodo.addEventListener('focusout', (event) => {
+            text = event.currentTarget.value;
+            //   수정완료
+            backup[1] = document.createTextNode(text); // 수정 반영 준비 완료
+            console.log(backup);
+    
+            thisTodo.removeChild(thisTodo.firstChild);
+            backup.forEach((item) => {
+              thisTodo.appendChild(item);
+            });
+            thisTodo.classList.remove('edit');
+            //  현재 투두리스트를 수정
+            console.log(index);
+            thisTodolist[index].todo = text;
+            //전체 투두 리스트를 수정
+            saveThisList();
+          });
+        }
+      });
+}
+function addDeleteTodo() {
+
+  //할일을 삭제
   todos.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-delete')) {
       var index = Array.from(todos.children).indexOf(
@@ -489,8 +517,10 @@ function deleteNmodifyTodo() {
       // 없앤애의 인텍스를 받아서 배열에서 slice 해야한다
       thisTodolist.splice(index, 1);
       saveThisList();
+      printTodoLeft();
     }
   });
+    //hover 시에 삭제 버튼
   todos.addEventListener('mouseover', (event) => {
     var deleteButton;
     if (
@@ -504,9 +534,9 @@ function deleteNmodifyTodo() {
           '.button-delete'
         );
       }
+      console.log('mouseover');
+      deleteButton.style.display = 'inline';
     }
-    console.log('mouseover');
-    deleteButton.style.display = 'inline';
   });
 
   todos.addEventListener('mouseout', (event) => {
@@ -526,56 +556,10 @@ function deleteNmodifyTodo() {
     }
   });
 
-  todos.addEventListener('dblclick', (event) => {
-    var thisTodo = event.target;
-    if (thisTodo.classList.contains('todo')) {
-      // 수정할 todo 가 몇번째인지 기록
-      var index = Array.from(todos.children).indexOf(thisTodo);
-      // 원래 태그를 빼와서 저장해두기
-      var backup = [];
-      thisTodo.childNodes.forEach((item) => backup.push(item));
-
-      console.log(backup);
-      var text = backup[1].wholeText;
-      console.log(text);
-      //   var text = event.target.textContent;
-      // 수정이 시작 되다.
-
-      // 싹지우고
-      while (thisTodo.firstChild) {
-        thisTodo.removeChild(thisTodo.firstChild);
-      }
-      var editbox = document.createElement('input');
-      editbox.setAttribute.type = 'text';
-      editbox.value = text;
-      editbox.classList.add('edit');
-
-      thisTodo.classList.add('edit');
-      thisTodo.appendChild(editbox);
-      //    thisTodo.firstChild.focus();
-      var editTodo = thisTodo.firstChild;
-      editTodo.focus();
-      editTodo.addEventListener('focusout', (event) => {
-        text = event.currentTarget.value;
-        //   수정완료
-        backup[1] = document.createTextNode(text); // 수정 반영 준비 완료
-        console.log(backup);
-
-        thisTodo.removeChild(thisTodo.firstChild);
-        backup.forEach((item) => {
-          thisTodo.appendChild(item);
-        });
-        thisTodo.classList.remove('edit');
-        //  현재 투두리스트를 수정
-        console.log(index);
-        thisTodolist[index].todo = text;
-        //전체 투두 리스트를 수정
-        saveThisList();
-      });
-    }
-  });
 }
 
 calendarInit();
 TodolistInit();
-resetTodolist();
+//3.todo 체크 ,수정,삭제 ,현재 상태 저장
+setTodoFunction();
+// resetTodolist();
