@@ -30,7 +30,8 @@ var monthlyShown = {
     console.log('monthlyShown:' + this.year, this.month);
   }
 };
-var todolistbyDate = {};
+// var todolistByDate = {};
+var todolistByDate = window.localStorage;
 var thisTodolist = [];
 var highlighted;
 var todayMark = null;
@@ -178,8 +179,8 @@ function addGoButton() {
   }
 }
 function addSelectDate() {
-  var dateShow = document.querySelector('.date_chosen-date');
-  var dayShow = document.querySelector('.date_chosen-day');
+  var dateShow = document.querySelector('.date-selected-date');
+  var dayShow = document.querySelector('.date-selected-day');
   var dateTable = document.querySelector('.monthly-table');
   dateShow.textContent = dateSelected.date;
   dayShow.textContent = dayToString(dateSelected.day());
@@ -211,7 +212,6 @@ function saveDateSelected(date) {
 }
 
 function highlightDate(dateTableCell) {
-  console.log(dateTableCell);
   highlighted = dateTableCell;
   dateTableCell.style.background = 'yellowgreen';
   dateTableCell.style.borderRadius = '50px';
@@ -299,7 +299,6 @@ function TodolistInit() {
       if (window.confirm('완료한일을 지울겁니까 정말?')) {
         while (done > 0) {
           thisTodolist.forEach((item, index) => {
-            console.log(index, item);
             if (item.done) {
               thisTodolist.splice(index, 1);
               done--;
@@ -325,7 +324,6 @@ function resetTodolist() {
   thisTodolist = [];
   //2.현재 날짜에 TODO 리스트 출력
   showTodolist();
-
 }
 
 function showTodolist() {
@@ -334,8 +332,10 @@ function showTodolist() {
   var keyDate = getDateKey();
 
   //2. todolist 내용표기
-  if (keyDate in todolistbyDate) {
-    thisTodolist = JSON.parse(todolistbyDate[keyDate]);
+  //FIXME[localstorage]   if (keyDate in todolistByDate) {
+  if (todolistByDate.getItem(keyDate)) {
+    //FIXME[localstorage] thisTodolist = JSON.parse(todolistByDate[keyDate]);
+    thisTodolist = JSON.parse(todolistByDate.getItem(keyDate));
     //※숫자가 key일때는 [] 로 불러온다는것 잊지 말기
     if (thisTodolist.length > 0) {
       thisTodolist.forEach((item) => {
@@ -401,7 +401,6 @@ function getDateKey() {
     ('0' + (dateSelected.month + 1)).slice(-2) +
     ('0' + dateSelected.date).slice(-2) +
     '';
-  console.log(keyDate);
   return keyDate;
 }
 
@@ -424,11 +423,11 @@ function printTodoLeft() {
 
 function saveThisList() {
   // key(날짜)- value(todo객체 배열)): json 으로 변경해서 저장
-  todolistbyDate[getDateKey()] = JSON.stringify(thisTodolist);
+  //FIXME[localstorage] todolistByDate[getDateKey()] = JSON.stringify(thisTodolist);
+  todolistByDate.setItem(getDateKey(), JSON.stringify(thisTodolist));
 }
 
 function setTodoFunction() {
-  
   //todo 체크기능
   addCheckTodo();
   //todo 수정 삭제 기능
@@ -455,64 +454,56 @@ function addCheckTodo() {
     }
   });
 }
-function addModifyTodo(){
-
-    todos.addEventListener('dblclick', (event) => {
-        var thisTodo = event.target;
-        if (thisTodo.classList.contains('todo')) {
-          // 수정할 todo 가 몇번째인지 기록
-          var index = Array.from(todos.children).indexOf(thisTodo);
-          // 원래 태그를 빼와서 저장해두기
-          var backup = [];
-          thisTodo.childNodes.forEach((item) => backup.push(item));
-    
-          var text = backup[1].wholeText;
-          console.log(text);
-          // 수정시작
-    
-          // 싹지우고
-          while (thisTodo.firstChild) {
-            thisTodo.removeChild(thisTodo.firstChild);
-          }
-          var editbox = document.createElement('input');
-          editbox.setAttribute.type = 'text';
-          editbox.value = text;
-          editbox.classList.add('edit');
-    
-          thisTodo.classList.add('edit');
-          thisTodo.appendChild(editbox);
-          //    thisTodo.firstChild.focus();
-          var editTodo = thisTodo.firstChild;
-          editTodo.focus();
-          editTodo.addEventListener('focusout', (event) => {
-            text = event.currentTarget.value;
-            //   수정완료
-            backup[1] = document.createTextNode(text); // 수정 반영 준비 완료
-            console.log(backup);
-    
-            thisTodo.removeChild(thisTodo.firstChild);
-            backup.forEach((item) => {
-              thisTodo.appendChild(item);
-            });
-            thisTodo.classList.remove('edit');
-            //  현재 투두리스트를 수정
-            console.log(index);
-            thisTodolist[index].todo = text;
-            //전체 투두 리스트를 수정
-            saveThisList();
-          });
-        }
+function addModifyTodo() {
+  todos.addEventListener('dblclick', (event) => {
+    var thisTodo = event.target;
+    if (thisTodo.classList.contains('todo')) {
+      // 수정할 todo 가 몇번째인지 기록
+      var index = Array.from(todos.children).indexOf(thisTodo);
+      // 원래 태그를 빼와서 저장해두기
+      var backup = [];
+      thisTodo.childNodes.forEach((item) => backup.push(item));
+      var text = backup[1].wholeText;
+      //FIXME 수정시작
+      todos.removeEventListener('mouseover', mouseover, event);
+      todos.removeEventListener('mouseout', mouseout, event);
+      // 지우고
+      while (thisTodo.firstChild) {
+        thisTodo.removeChild(thisTodo.firstChild);
+      }
+      var editbox = document.createElement('input');
+      editbox.setAttribute.type = 'text';
+      editbox.value = text;
+      editbox.classList.add('edit');
+      thisTodo.classList.add('edit');
+      thisTodo.appendChild(editbox);
+      var editTodo = thisTodo.firstChild;
+      editTodo.focus();
+      editTodo.addEventListener('focusout', (event) => {
+        text = event.currentTarget.value;
+        //   수정완료
+        backup[1] = document.createTextNode(text); // 수정 반영 준비 완료
+        thisTodo.removeChild(thisTodo.firstChild);
+        backup.forEach((item) => {
+          thisTodo.appendChild(item);
+        });
+        thisTodo.classList.remove('edit');
+        //  현재 투두리스트를 수정
+        thisTodolist[index].todo = text;
+        //전체 투두 리스트를 수정
+        deleteButtonToggle();
+        saveThisList();
       });
+    }
+  });
 }
 function addDeleteTodo() {
-
   //할일을 삭제
   todos.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-delete')) {
       var index = Array.from(todos.children).indexOf(
         event.target.parentElement
       );
-      console.log('delete!!' + index);
       todos.removeChild(event.target.parentElement);
       // 없앤애의 인텍스를 받아서 배열에서 slice 해야한다
       thisTodolist.splice(index, 1);
@@ -520,46 +511,45 @@ function addDeleteTodo() {
       printTodoLeft();
     }
   });
-    //hover 시에 삭제 버튼
-  todos.addEventListener('mouseover', (event) => {
-    var deleteButton;
-    if (
-      event.target.classList.contains('todo') ||
-      event.target.parentElement.classList.contains('todo')
-    ) {
-      if (event.target.classList.contains('todo')) {
-        deleteButton = event.target.querySelector('.button-delete');
-      } else {
-        deleteButton = event.target.parentElement.querySelector(
-          '.button-delete'
-        );
-      }
-      console.log('mouseover');
-      deleteButton.style.display = 'inline';
-    }
-  });
+  deleteButtonToggle();
+}
 
-  todos.addEventListener('mouseout', (event) => {
-    if (
-      event.target.classList.contains('todo') ||
-      event.target.parentElement.classList.contains('todo')
-    ) {
-      console.log('mouseout');
-      if (event.target.classList.contains('todo')) {
-        deleteButton = event.target.querySelector('.button-delete');
-      } else {
-        deleteButton = event.target.parentElement.querySelector(
-          '.button-delete'
-        );
-      }
-      deleteButton.style.display = 'none';
-    }
-  });
+function deleteButtonToggle() {
+  //hover 시에 삭제 버튼
+  todos.addEventListener('mouseover', mouseover, event);
+  todos.addEventListener('mouseout', mouseout, event);
+}
 
+function mouseover(event) {
+  var deleteButton;
+  if (
+    event.target.classList.contains('todo') ||
+    event.target.parentElement.classList.contains('todo')
+  ) {
+    if (event.target.classList.contains('todo')) {
+      deleteButton = event.target.querySelector('.button-delete');
+    } else {
+      deleteButton = event.target.parentElement.querySelector('.button-delete');
+    }
+    deleteButton.style.display = 'inline';
+  }
+}
+
+function mouseout(event) {
+  if (
+    event.target.classList.contains('todo') ||
+    event.target.parentElement.classList.contains('todo')
+  ) {
+    if (event.target.classList.contains('todo')) {
+      deleteButton = event.target.querySelector('.button-delete');
+    } else {
+      deleteButton = event.target.parentElement.querySelector('.button-delete');
+    }
+    deleteButton.style.display = 'none';
+  }
 }
 
 calendarInit();
 TodolistInit();
-//3.todo 체크 ,수정,삭제 ,현재 상태 저장
+resetTodolist();
 setTodoFunction();
-// resetTodolist();

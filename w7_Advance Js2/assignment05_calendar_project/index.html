@@ -11,115 +11,113 @@
 
 <body>
     <div class='calendar'>
-    <div class='calendar border-style'>
-
-                <div class='date_chosen'>
-                        <div class='date_chosen-day'>Monday</div>
-                        <div class='date_chosen-date'>1</div>
-                   
-                    </div>    
-     
-
-        <div class='monthly '>
-                <div class='monthly-head'>
-                        <button class='bt-last-month'><</button>
-                        <div class='inline year'>2019</div><div class=' inline month'>January</div>
-                        <button class='bt-next-month'>></button>
-                </div>
-                <table class='monthly-table'>
-                    <thead class='days'>
-                        <tr>
-                            <th>S</th>
-                            <th>M</th>
-                            <th>T</th>
-                            <th>W</th>
-                            <th>T</th>
-                            <th>F</th>
-                            <th>S</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class='row1'>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr class='row2'>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr class='row3'>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr class='row4'>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr class='row5'>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr class='row6'>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class='calendar border-style'>
+            <div class='date-selected'>
+                <div class='date-selected-day'>day</div>
+                <div class='date-selected-date'>date</div>
             </div>
-        </div>
-        <div class='button-go'>
-
-                <div class='button-go-today'> 
-                        today
+            <div class='monthly'>
+                <div class='monthly-head'>
+                    <button class='bt-last-month'><</button> 
+                    <div class='year'>2019</div>
+                    <div class='month'>January</div>
+                    <button class='bt-next-month'>></button>
                 </div>
-                <div class='button-go-chosen'>
-                        chosen
-                </div>
+            <table class='monthly-table'>
+                <thead class='days'>
+                    <tr>
+                        <th>S</th>
+                        <th>M</th>
+                        <th>T</th>
+                        <th>W</th>
+                        <th>T</th>
+                        <th>F</th>
+                        <th>S</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class='row1'>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class='row2'>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class='row3'>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class='row4'>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class='row5'>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class='row6'>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-        <div class='todolist border-style'>
-        <div class='todolist-title'><div class='todolist-date'>2019.10.07.TUE</div> TODOs</div> 
-        <div class= 'todolist-add'>
-                <input class='todolist-add-text' type='text' placeholder=" 할일을 적어 보아요 ">
-                <input class='todolist-add-submit' type='button' value="ADD">
-        </div>  
+    <div class='button-go'>
+        <div class='button-go-today button-go-style'>today</div>
+        <div class='button-go-chosen button-go-style'>chosen</div>
+    </div>
+    </div>
+    <div class='todolist border-style'>
+        <div class='todolist-title'>
+            <div class='todolist-date'>2019.10.07.TUE</div> TODOs
+        </div>
+        <div class='todolist-add'>
+            <input class='todolist-add-text' type='text' placeholder=" 할일을 적어 보아요 ">
+            <input class='todolist-add-submit' type='button' value="ADD">
+        </div>
         <div class='todolist-list'></div>
         <div class='todolist-footer'>
             <span class='footer-todo-number'>todo left</span>
-            <div class='footer-filter'><span class='button-filter filter-on'>all</span><span class='button-filter'>todo</span><span class='button-filter'>done</span></div>
+            <div class='footer-filter'>
+                <span class='button-filter filter-on'>all</span>
+                <span class='button-filter'>todo</span>
+                <span class='button-filter'>done</span>
+            </div>
             <span class='footer-todo-clear'>clear</span>
         </div>
-<script src='calendar.js'></script>
+        <script src='calendar.js'></script>
 </body>
 
 </html>

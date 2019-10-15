@@ -1,15 +1,12 @@
-html {
-  margin: 0;
-  height: 100%;
-  display: flex;
-}
-
 body {
-  margin: 10px;
   display: flex;
   flex-direction: column;
 }
-
+.border-style {
+  border: lightgray 1px solid;
+  border-radius: 5px;
+}
+/* calendar */
 .calendar {
   box-sizing: border-box;
   display: flex;
@@ -17,73 +14,36 @@ body {
   height: fit-content;
 }
 
-.calendar .date_chosen {
-  margin: 0 -5px 0 0px;
+.calendar .date-selected {
   padding: 30px 0;
   text-align: center;
-  width: 200px;
+  width: 160px;
   color: white;
   background-color: rgb(77, 63, 59);
   border-radius: 5px 0 0 5px;
 }
 
-.calendar .date_chosen-day {
+.calendar .date-selected-day {
   font-size: 1.5em;
   font-weight: 600;
 }
 
-.calendar .date_chosen-date {
-  font-size: 4em;
+.calendar .date-selected-date {
+  font-size: 3em;
   font-weight: 800;
-}
-.button-go {
-  font-size: 12px;
-}
-.button-go-today {
-  text-align: center;
-  margin: 10px;
-  padding: 5px;
-  width: 40px;
-  border: orangered 2px solid;
-  border-radius: 5px;
-  background: lightgray;
-}
-.button-go-chosen {
-  text-align: center;
-  width: 40px;
-  border: lightgray 2px solid;
-  margin: 10px;
-  padding: 5px;
-  background: yellowgreen;
-  border-radius: 5px;
-}
-.calendar .monthly {
-  height: 100%;
 }
 
 .monthly-head {
   padding: 10px;
   text-align: center;
   color: rgb(77, 63, 59);
-  font-size: 15px;
+  line-height: 16px;
   font-weight: 900;
 }
-
-.monthly-table {
-  font-size: 12px;
-  border-spacing: 30px 3px;
-}
-.today {
-  border: solid orangered 3px;
-  border-radius: 50px;
-  box-sizing: border-box;
-}
-td {
-  text-align: center;
-  width: 30px;
-  height: 25px;
-  margin: 0 60px;
-  color: gray;
+.year,
+.month {
+  width: 80px;
+  display: inline-block;
 }
 
 .bt-last-month {
@@ -99,29 +59,52 @@ td {
   border: none;
   margin-right: 50px;
 }
-
-.inline {
-  display: inline-block;
-  width: 100px;
+.monthly-table {
+  font-size: 12px;
+  border-spacing: 30px 3px;
 }
-
-.border-style {
-  border: lightgray 1px solid;
+td {
+  text-align: center;
+  width: 25px;
+  height: 25px;
+  margin: 0 60px;
+  color: gray;
+}
+.button-go {
+  font-size: 12px;
+}
+.button-go-style {
+  margin: 10px;
+  padding: 5px;
+  width: 40px;
   border-radius: 5px;
+  text-align: center;
 }
-
+.button-go-today {
+  border: orangered 2px solid;
+  background: lightgray;
+}
+.button-go-chosen {
+  border: lightgray 2px solid;
+  background: yellowgreen;
+}
+.today {
+  border: solid orangered 3px;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+/* todo list  */
 .todolist {
-  max-height: 600px;
+  max-height: 580px;
   width: 655px;
   margin: 10px 0;
-  /* box-sizing: border-box; */
   display: flex;
   flex-direction: column;
 }
 
 .todolist-title {
   position: relative;
-  margin: 10px 10px 0 10px;
+  margin: 10px;
   text-align: center;
   font-size: 30px;
   font-weight: 900;
@@ -131,8 +114,8 @@ td {
 .todolist-date {
   position: absolute;
   top: 20px;
-  right: 30px;
-  font-size: 10px;
+  right: 20px;
+  font-size: 12px;
   font-weight: 500;
   color: gray;
 }
@@ -140,11 +123,11 @@ td {
 .todolist-add {
   margin: 10px 10px 0 10px;
   display: flex;
-  height: 30px;
+  height: 35px;
 }
 
 .todolist-add-text {
-  padding-left: 10px;
+  padding-left: 20px;
   flex: 8;
   font-size: 15px;
   border: 1px solid lightgray;
@@ -180,9 +163,13 @@ td {
   background: white;
   position: relative;
 }
-
+input[type='checkbox'] {
+  -webkit-transform: scale(2);
+  margin: 0 30px;
+}
 .done {
   text-decoration-line: line-through;
+  color: lightgray;
 }
 
 .todo.edit {
@@ -202,6 +189,7 @@ input.edit {
   right: 10px;
   bottom: 0;
   cursor: pointer;
+  color: black;
 }
 
 .todolist-footer {
@@ -246,10 +234,6 @@ input.edit {
   text-align: center;
   border-radius: 5px;
   box-shadow: 30%;
-}
-input[type='checkbox'] {
-  -webkit-transform: scale(2);
-  margin: 0 30px;
 }
 
 /* scroll-bar style */
