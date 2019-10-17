@@ -348,6 +348,33 @@ return obj;
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
+    console.log(collection);
+      for(var repeat=collection.length;repeat>1;repeat--){
+        for(var i = 0;i < repeat-1 ;i++){
+            var currItem=collection[i];
+            var nextItem=collection[i+1];
+            var curr;
+            var next;
+                if(typeof iterator==='function'){
+                    curr= iterator(collection[i]);
+                    next= iterator(collection[i+1]);
+                }else{
+                    curr=currItem[iterator];
+                    next=nextItem[iterator];
+                    console.log(curr,next)
+                }
+
+
+                if(curr>next||curr===undefined){
+                    collection[i]=nextItem;
+                    collection[i+1]=currItem;
+                }
+
+
+        }
+      }
+      return collection;
+
   };
 
   // Returns a function, that, when invoked, will only be triggered at most once
@@ -356,5 +383,18 @@ return obj;
   //
   // Note: This is difficult! It may take a while to implement.
   _.throttle = function(func, wait) {
+    var triggered= false  ; 
+    var result;
+    return function(){
+        if(!triggered){ // 트리거가 안되어있으면 실행 
+        result = func.apply(this, arguments);
+         triggered=true;// 트리거가 되었다. 
+         setTimeout(triggerOff,wait);
+         function triggerOff(){
+            triggered=false;
+         }
+        }
+        return result;
+    }
   };
 }());
