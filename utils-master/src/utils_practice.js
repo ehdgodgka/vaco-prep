@@ -1,20 +1,27 @@
 /* globals window, _ */
 (function() {
-  'use strict';
+  "use strict";
 
   window._ = {};
 
-  // Returns whatever value is passed as the argument. This function doesn't
-  // seem very useful, but remember it--if a function needs to provide an
-  // iterator when the user does not pass one in, this will be handy.
+  function thisTest() {
+    console.log("this:" + this);
+  }
+
+  thisTest();
+
   function newCollection(collection) {
     if (Array.isArray(collection)) {
       var result = [];
     } else {
       result = {};
     }
+
     return result;
   }
+  // Returns whatever value is passed as the argument. This function doesn't
+  // seem very useful, but remember it--if a function needs to provide an
+  // iterator when the user does not pass one in, this will be handy.
   _.identity = function(val) {
     return val;
   };
@@ -49,7 +56,7 @@
   _.last = function(array, n) {
     return n === undefined
       ? array[array.length - 1]
-      : array.slice(array.length - n < 0 ? 0 : array.length - n);
+      : array.slice(array.length < n ? 0 : array.length - n);
   };
 
   // Call iterator(value, key, collection) for each element of collection.
@@ -118,29 +125,27 @@
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
-    var result;
-    result = _.filter(collection, function(item) {
-      if (test(item)) {
-        return false;
-      } else {
-        return true;
-      }
+    return _.filter(collection, function(item) {
+      //   if (test(item)) {
+      //     return false;
+      //   } else {
+      //     return true;
+      //   }
+      return !test(item);
     });
-    return result;
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
-      var uniq=[];
-     return _.filter(array, function(item) {
+    var uniq = [];
+    return _.filter(array, function(item) {
       if (!uniq.includes(item)) {
         uniq.push(item);
         return true;
-      }else{
+      } else {
         return false;
       }
     });
-    
   };
 
   // Return the results of applying an iterator to each element.
@@ -194,21 +199,24 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
-      if(accumulator!==undefined){
-        var total=accumulator;
+    if (accumulator !== undefined) {
+      var acc = accumulator;
+    }
+    _.each(collection, function(item, index) {
+      if (accumulator !== undefined) {
+        // accumlator 가 있으면  인덱스 0부터 바로시작
+        acc = iterator(acc, item);
+      } else {
+        //  없으면 인덱스 0으로 만들어주고 인덱스 1 부터 시작
+        // if (!index) {
+        //   acc = item;
+        // } else {
+        //   acc = iterator(acc, item);
+        // }
+        acc = !index ? item : iterator(acc, item);
       }
-    _.each(collection,function(item,index){
-            if(accumulator!==undefined){
-                total=iterator(total,item);
-                }else{
-                   if(!index){
-                    total=item;
-                   }else{
-                    total=iterator(total,item);
-                   }
-                }
     });
-    return total;
+    return acc;
   };
 
   // Determine if the array or object contains a given value (using `===`).
@@ -230,15 +238,19 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
-    return _.reduce(collection,function(isEvery,item){
-        if (!isEvery){
-            return false;
+    return _.reduce(
+      collection,
+      function(isEvery, item) {
+        if (!isEvery) {
+          return false;
         }
-        if(!iterator){
-            return item? true : false;
+        if (!iterator) {
+          return item ? true : false;
         }
-        return iterator(item)? true: false;
-    },true);
+        return iterator(item) ? true : false;
+      },
+      true
+    );
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
@@ -246,17 +258,15 @@
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
 
-    return _.every(collection,function(item){
-    if(!iterator){
-        return item? false : true ;
-    }    
-    if(iterator(item)){  // 아이템이 하나라도 통과하면 false 로 돌리기 
-        return false ;
-    }else{
-        return true;
-    }
-    }) ? false   : true ;
-    
+    return _.every(collection, function(item) {
+      // 모두 false 인지를 확인을 합니다.
+      if (!iterator) {
+        return !item ? true : false;
+      }
+      return !iterator(item) ? true : false;
+    })
+      ? false
+      : true; // 모두 false 이면 some 이 아님 !
   };
 
   /**
@@ -278,25 +288,28 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
-      for(var i=0;i<arguments.length ;i++){
-        _.each(arguments[i],function(item,key){
-            obj[key]=item;
-        });
-      }
-      return obj;
+    for (var i = 1; i < arguments.length; i++) {
+      _.each(arguments[i], function(item, key) {
+        obj[key] = item;
+      });
+    }
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
-  _.defaults = function(obj) {
-    for(var i=0;i<arguments.length ;i++){
-        _.each(arguments[i],function(item,key){
-            if(!(key in obj)){
-            obj[key]=item;
-            }
-        });
-      }
-      return obj;
+  _.defaults = function(obj, ...arg) {
+    console.log(arguments);
+    console.log([...arguments]);
+    console.log(...arg);
+    for (var i = 1; i < arguments.length; i++) {
+      _.each(arguments[i], function(item, key) {
+        if (!(key in obj)) {
+          obj[key] = item;
+        }
+      });
+    }
+    return obj;
   };
 
   /**
@@ -318,13 +331,16 @@
 
     // TIP: We'll return a new function that delegates to the old one, but only
     // if it hasn't been called before.
+
     return function() {
       if (!alreadyCalled) {
+        //   console.log('first call');
         // TIP: .apply(this, arguments) is the standard way to pass on all of the
         // infromation from one function call to another.
         result = func.apply(this, arguments);
         alreadyCalled = true;
       }
+      //   console.log('call');
       // The new function always returns the originally computed result.
       return result;
     };
@@ -336,7 +352,10 @@
   // The arguments for the original function are passed after the wait
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
-  _.delay = function(func, wait) {};
+  _.delay = function(func, wait, ...ar) {
+    var bound = func.bind(this, ...ar);
+    setTimeout(bound, wait);
+  };
 
   /**
    * ADVANCED
@@ -350,12 +369,42 @@
   // If iterator is a string, sort objects by that property with the name
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
-  _.sortBy = function(collection, iterator) {};
+  _.sortBy = function(collection, iterator) {
+    // console.log('정렬전:'+collection);
+    if (typeof iterator === "function") {
+      // console.log('함수 iterator');
+      collection.sort((a, b) =>
+        iterator(a) > iterator(b) ? 1 : iterator(a) === iterator(b) ? 0 : -1
+      );
+    } else if (typeof iterator === "string") {
+      // console.log('string iterator')
+      collection.sort((a, b) =>
+        a[iterator] > b[iterator] ? 1 : a[iterator] === b[iterator] ? 0 : -1
+      );
+    }
+    // console.log('정렬후:'+collection);
+    return collection;
+  };
+
+  // 바꾸고나면 다시  비교 중이던 아이템을 비교
+  // 바꾸는게 없었으면 두번째 아이템을 기준으로 비교를 시작 !
 
   // Returns a function, that, when invoked, will only be triggered at most once
   // during a given window of time.  See the Underbar readme for extra details
   // on this function.
   //
   // Note: This is difficult! It may take a while to implement.
-  _.throttle = function(func, wait) {};
+  _.throttle = function(func, wait) {
+    var triggered = false;
+
+    return function() {
+      if (!triggered) {
+        triggered = true;
+        func.apply(this, arguments);
+        setTimeout(function() {
+          triggered = false;
+        }, wait);
+      }
+    };
+  };
 })();
