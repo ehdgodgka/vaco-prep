@@ -1,0 +1,10 @@
+h1{
+    font-size: 1.5em;
+    background-color: antiquewhite;
+    display:inline-block;
+}
+
+.result{
+background-color: rgb(231, 245, 241);
+padding:2em;
+}

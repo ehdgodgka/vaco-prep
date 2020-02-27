@@ -1,0 +1,11 @@
+
+body{
+    display:flex;
+    justify-content: center;
+}
+
+.block{
+    background-color: beige;
+    width:2rem;
+    height:2rem;
+}
